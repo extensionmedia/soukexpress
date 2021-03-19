@@ -1,0 +1,34 @@
+{
+	"Log":{
+		"0"			:	{
+							"title"		:	"LogOut",
+							"message"	:	"vient de se Déconnecté"					
+						},
+		"1"			:	{
+							"title"		:	"LogIn",
+							"message"	:	"vient de se Connecté"					
+						}		
+	},
+	"Propriete":{
+		"-1"		:	{
+							"title"		:	"Supprimer",
+							"message"	:	"a supprimer un appartement"					
+						},
+		"0"			:	{
+							"title"		:	"Modifier",
+							"message"	:	"a modifié un appartement"					
+						},
+		"1"			:	{	
+							"title"		:	"Ajouter",
+							"message"	:	"a ajouté un nouvel appartement"
+						}	
+	},
+	"Pr-2":{
+		"action"		: 	"Propriete",
+		"message"		: 	"a modifié un appartement"		
+	},
+	"Pr-0":{
+		"action"		: 	"Propriete",
+		"message"		: 	"a supprimé un appartement"
+	}
+}

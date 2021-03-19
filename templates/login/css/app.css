@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans');
+*{
+	box-sizing: border-box;
+	word-wrap: break-word;
+}
+input[type="text"].error,input[type="email"].error,textarea.error,select.error,input[type="password"].error{
+	border:2px solid #F40000 !important; background-color: transparent}
+
+@font-face {
+  font-family: 'Cardo';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Cardo Italic'), local('Cardo-Italic'), url(https://fonts.gstatic.com/s/cardo/v9/wlpxgwjKBV1pqhv97IMx2Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400;
+  src: local('EB Garamond Regular'), local('EBGaramond-Regular'), url(https://fonts.gstatic.com/s/ebgaramond/v9/SlGUmQSNjdsmc35JDF1K5GR1SDw.ttf) format('truetype');
+}
+body {
+  margin: 0;
+  background-color: #5774b8;
+}
+.sandbox-correct-pronounciation {
+  padding: 1em 0 1em 0;
+}
+.heading-correct-pronounciation {
+  margin: auto;
+  text-align: center;
+  position: relative;
+}
+h1 {
+  color: #fff;
+  font-family: 'Cardo', serif;
+  font-size: 0.9em;
+  font-weight: normal;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  line-height: 2.2em;
+}
+em {
+  font-family: 'EB Garamond', serif;
+  font-size: 3.5em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  font-style: normal;
+  padding-top: 0.1em;
+  text-shadow: 0.07em 0.07em 0 rgba(0, 0, 0, 0.1);
+}
+em::before,
+em::after {
+  content: "§";
+  display: inline-block;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  opacity: 0.2;
+  margin: 0 0.6em;
+  font-size: 0.5em;
+}
+
+
+
+/*
+body{
+	font-family: Camphor,Segoe UI,Open Sans,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    color: #525f7f;
+    text-transform: none;
+}
+*/
+.login_header{
+	height: 130px;
+	margin: 0 auto;
+	padding-top: 38px;
+	width: 330px;
+	-webkit-font-smoothing:antialiased;
+	text-align: center;
+	vertical-align: bottom
+}
+
+.login_header img{
+	height: auto;
+	width: 80%;
+	vertical-align: bottom
+}
+.login_header h1{
+	float: none;
+    height: 45px;
+    margin: 0 auto;
+    width: 229px;
+	font-weight: normal;
+}
+
+.login_container{
+	background: linear-gradient(#fff,#f2f6f9);
+	border-radius: 6px;
+	box-shadow: 0 0 0 1px rgba(14,41,57,.12), 0 2px 5px rgba(14,41,57,.44), inset 0 -1px 2px rgba(14,41,57,.15);
+	width: 330px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 14px;
+	padding: 15px 10px;
+}
+.login_container h2{
+	font-family: Camphor,Segoe UI,Open Sans,sans-serif;
+    padding: 17px 24px;
+    background: url(../../../templates/login/images/divider-da67eb5fc0c6d51d6a5cc4f1546da491.png) 50% 100% no-repeat;
+    color: #1e2b32;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    margin-bottom: 17px;
+}
+.login_container  input[type=text], input[type=password]{
+	box-sizing: border-box;
+    padding: 10px 12px;
+    width: 100%;
+    border-radius: 5px;
+    -ms-box-shadow: inset 0 1px 2px rgba(0,0,0,.18);
+    -o-box-shadow: inset 0 1px 2px rgba(0,0,0,.18);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.18);
+    -webkit-font-smoothing: antialiased;
+    border: 1px solid #bbb;
+    border-top-color: #999;
+    font-size: 18px;
+}
