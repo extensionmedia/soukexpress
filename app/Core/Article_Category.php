@@ -251,7 +251,6 @@ class Article_Category extends Modal{
 	
 	/** Avatar Section*/
 	public function avatar($params){
-		
 		if(!isset($params['UID'])) return $this->default_avatar;
 		
 		$data = $this->find('',['conditions'=>['UID='=>$params['UID']]],'');
@@ -319,6 +318,11 @@ class Article_Category extends Modal{
 		return $view->render($params); 
 	}
 	
+	public function create($params){
+		$params['image_url'] = $this->avatar(['UID'=>$params['UID']]);
+		var_dump($params);
+	}
+
 	public function add($params = []){
 		$params = [
 			'categoriess'	=>	$this->find('', ['order'=>'ord asc'], ''),

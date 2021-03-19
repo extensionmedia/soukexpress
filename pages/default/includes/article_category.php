@@ -267,53 +267,6 @@
 			});
 		});
 		
-		/************
-		Update Category
-		************/		
-		$(document).on('click','.submit', function(e){
-			var form = $(this).data('form');
-			var controller = $(this).data('controller');
-			var form_inputs = {};
-			var go = true;
-			$('.'+form+' .input').each(function(){
-				if($(this).hasClass('required') && $(this).val() === ''){
-					$(this).addClass('bg-red-100').addClass('border-red-700');
-					go = false;
-				}else{
-					$(this).removeClass('border-red-700').removeClass('bg-red-100');
-					if($(this).is(":checkbox")) {
-						form_inputs[$(this).attr('id')] = $(this).prop('checked')?1:0;	
-					}else{
-						form_inputs[$(this).attr('id')] = $(this).val();		 
-					}
-				}
-			});
-			if(go){
-				var data = {
-					'controler' 	 		: 	controller,
-					'method'				:	'update',
-					'params'				:	form_inputs
-				};
-				$.ajax({
-					type		: 	"POST",
-					url			: 	"pages/default/ajax/Ajax.php",
-					data		:	data,
-					dataType	: 	"json",
-				}).done(function(response){
-					if(response.code == 1){
-						$('.close').trigger('click');
-						$('.load_categories').trigger('click');
-					}
-				}).fail(function(xhr){
-					alert("Error");
-					console.log(xhr.responseText);
-				});				
-			}
-
-			
-			
-		});
-		
 		$(document).on('click', '.close', function(){
 			$("." + $(this).data("target") ).remove();
 		});

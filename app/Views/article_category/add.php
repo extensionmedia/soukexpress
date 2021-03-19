@@ -12,7 +12,6 @@
 		<div class="flex category_form">
 			<div class="bg-white px-4 py-4 flex-1">
 				<input id="UID" class="input required" type="hidden" value="<?= substr(md5( uniqid('auth', true) ),0,8) ?>">
-				<input id="image_url" class="input" type="hidden" value="">
 				<div class="form md:flex items-center mb-2 gap-2">
 					<label for="article_category_fr" class="w-36 text-right text-gray-700 text-xs">Category [Fr]</label>
 					<input id="article_category_fr" class="input required rounded border py-1 px-2 flex-1" placeholder="Category fr">
@@ -59,7 +58,7 @@
 		<hr class="mb-6">
 		
 		<div class="flex items-center p-4 gap-2">
-			<button class="submit rounded border py-2 px-3 bg-blue-500 text-white text-xs font-bold" data-form="category_form" data-controller="Article_Category">
+			<button class="create rounded border py-2 px-3 bg-blue-500 text-white text-xs font-bold" data-form="category_form" data-controller="Article_Category">
 				<i class="far fa-save"></i> Enregistrer
 			</button>
 			<button class="close rounded border py-2 px-3 bg-gray-500 text-white text-xs font-bold" data-target="my_modal">
@@ -70,3 +69,53 @@
 
 	</div>
 </div>
+<script>
+
+	$(document).ready(function(){
+		
+		$(document).on('click','.create', function(e){
+			var form = $(this).data('form');
+			var controller = $(this).data('controller');
+			var form_inputs = {};
+			var go = true;
+			$('.'+form+' .input').each(function(){
+				if($(this).hasClass('required') && $(this).val() === ''){
+					$(this).addClass('bg-red-100').addClass('border-red-700');
+					go = false;
+				}else{
+					$(this).removeClass('border-red-700').removeClass('bg-red-100');
+					if($(this).is(":checkbox")) {
+						form_inputs[$(this).attr('id')] = $(this).prop('checked')?1:0;	
+					}else{
+						form_inputs[$(this).attr('id')] = $(this).val();		 
+					}
+				}
+			});
+			if(go){
+				var data = {
+					'controler' 	 		: 	controller,
+					'method'				:	'create',
+					'params'				:	form_inputs
+				};
+				$.ajax({
+					type		: 	"POST",
+					url			: 	"pages/default/ajax/Ajax.php",
+					data		:	data,
+					dataType	: 	"json",
+				}).done(function(response){
+					if(response.code == 1){
+						$('.close').trigger('click');
+						$('.load_categories').trigger('click');
+					}
+				}).fail(function(xhr){
+					alert("Error");
+					console.log(xhr.responseText);
+				});				
+			}
+
+			
+			
+		});		
+	});
+
+</script>

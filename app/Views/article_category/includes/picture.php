@@ -9,9 +9,6 @@
 <button class="reload_file_category hide hover:bg-red-400 hover:text-white absolute bottom-0 left-0 m-4 border border-gray-300 rounded py-1 px-2 text-red-500" data-uid="<?= $UID ?>">
 	reload
 </button>
-<div class="h-2 w-full border rounded overflow-hidden progress hide">
-	<div class="bg-blue-500 w-20 h-2 progress-bar"></div>
-</div>
 
 <script>
 	$(document).ready(function(){
