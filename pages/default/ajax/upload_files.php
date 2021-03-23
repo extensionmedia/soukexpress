@@ -42,7 +42,9 @@ if ($isOK){
 	
 	if ( !file_exists($dir) ) {
 		mkdir($dir, 0777, true);
-	}	
+	}elseif(  strpos($_GET["path"], 'category/') !== false){
+		array_map('unlink', glob("$dir/*.*"));
+	}
 
 	$lastId = time();
 	$ext = substr($filename, strrpos($filename, '.') + 1);

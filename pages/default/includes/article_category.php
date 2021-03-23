@@ -12,7 +12,7 @@
 	
 	
 	<div class="flex gap-4 p-2">
-		<div class="flex-1 overflow-auto">
+		<div class="overflow-auto w-80">
 			<div class="flex items-center justify-between py-2">
 				<div>
 					<button class="load_categories text-xs border bg-gray-600 text-white rounded py-2 px-2 font-bold shadow"><i class="fas fa-sync-alt"></i></button>
@@ -23,8 +23,8 @@
 			</div>
 			<div class="categories"><div class="p-4 bg-green-100 border border-green-300 text-green-800"><i class="fas fa-sync fa-spin"></i> Loading...</div></div>
 		</div>
-		<div class="subCategories level_1 flex-1 overflow-auto"></div>		
-		<div class="subCategories level_2 flex-1 overflow-auto"></div>
+		<div class="subCategories level_1 overflow-auto w-80"></div>		
+		<div class="subCategories level_2 overflow-auto w-80"></div>
 
 	</div>
 </div>
@@ -243,6 +243,7 @@
 				}
 			};
 			$("html, body").animate({ scrollTop: 0 }, "slow");
+			$('.my_modal').prepend("");
 			$('.wrapper').prepend(`
 									<div class="my_modal w-full h-full bg-gray-800 bg-opacity-25 absolute top-0 z-10">
 										<div class="p-4 bg-green-100 border border-green-300 text-green-800 mt-24 mx-auto w-64 text-center">
