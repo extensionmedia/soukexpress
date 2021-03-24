@@ -33,23 +33,6 @@ class Article_Category extends Modal{
 			die($e->getMessage());
 		}
 	}	
-		
-	public function getColumns(){
-		
-		if ( isset($this->columns) ){
-			return $this->columns;
-		}else{
-			$columns = array();
-			//var_dump($this->getColumnsName("client"));
-			foreach($this->getColumnsName(strtolower($this->tableName)) as $k=>$v){
-				//var_dump($v["Field"]);
-				array_push($columns, array("column" => $v["Field"], "label" => $v["Field"]) );
-			}
-			array_push($columns, array("column" => "actions", "label" => "", "style"=>"min-width:105px; width:105px") );
-			return $columns;
-		}
-		
-	}
 
 	public function images($params){
 		$statics = $_SESSION["STATICS"];
@@ -110,7 +93,18 @@ class Article_Category extends Modal{
 
 	
 	public function get(){
-		return json_encode($this->find('', ['order'=>'ord asc'], ''));
+
+		$view = new View("article_category.partials.header");
+		$html = $view->render([]);
+		foreach($this->find('', ['order'=>'ord asc'], '') as $category){
+			$view = new View("article_category.partials.item");
+			$html .= $view->render([
+				'parent'	=>	0,
+				'lavel'		=>	0,
+				'category'	=>	$category
+			]); 
+		}
+		return $html;
 	}
 	
 	public function edit($params = []){
