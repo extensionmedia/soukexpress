@@ -69,15 +69,15 @@ class Article_Sous_Category extends Modal{
 
 	public function get($params){
 
-		$view = new View("article_sous_category.partials.header");
-		$html = $view->render([]);
-		
 		if(!empty($params)){
 			if($params['id_parent'] != 0)
-				$data = $this->find('', ['conditions'=>['id_parent='=>$params['id_parent']]], 'article_sous_category');
+				$data = $this->find('', ['conditions'=>['id_parent='=>$params['id_parent']], 'order'=>'ord'], 'article_sous_category');
 			else
 				$data = $this->find('', ['conditions AND'=>['id_parent='=>-1,'id_article_category='=>$params['id_article_category']]], 'article_sous_category');
 		}
+
+		$view = new View("article_sous_category.partials.header");
+		$html = $view->render([]);
 
 		foreach($data as $sous_category){
 			$view = new View("article_sous_category.partials.item");
@@ -140,7 +140,7 @@ class Article_Sous_Category extends Modal{
 		$params = [
 			'categories'		=>	$this->find('', ['order'=>'ord asc'], 'article_category'),
 			'sous_category'		=>	$category,
-			'parent'			=>	$category['id_parent']=="-1"? []: (count($parent)? $parent: []),
+			'parents'			=>	$params['categories'],
 			'obj'				=>	new Article_Sous_Category,
 			'UID'				=>	$category['UID']
 		];
@@ -150,12 +150,23 @@ class Article_Sous_Category extends Modal{
 
 	public function add($params = []){
 		$params = [
-			'categories'	=>	$this->find('', ['order'=>'ord asc'], ''),
+			'categories'	=>	$this->find('', ['order'=>'ord asc'], 'article_category'),
 			'UID'			=>	 substr( md5( uniqid('auth', true) ),0,8),
 			'obj'			=>	new Article_Sous_Category,
+			'parents'		=>	$params['categories']
 		];
 		$view = new View("article_sous_category.add");
 		return $view->render($params); 
+	}
+
+	public function create($params){
+		$params['image_url'] = $this->avatar(['UID'=>$params['UID']]);
+		return $this->save($params);
+	}
+
+	public function update($request){
+		$request['image_url'] = $this->avatar(['UID'=>$request['UID']]);
+		return $this->save($request);
 	}
 
 }

@@ -37,28 +37,44 @@
 				</div>
 			</div>	
 			
-			<?php if(isset($categories)): ?>
+			
 			<div class="bg-white px-4 py-4 w-96">
-				<select class="input required bg-gray-300 py-1 border border-gray-200 rounded mb-2">
-				<?php foreach($categories as $k=>$v): ?>
-					<option class="bg-gray-100 font-bold text-xs" value="<?= $v["id"] ?>"><?= $v["article_sous_category_fr"]."\n".$v["article_sous_category_ar"] ?></option>
-				<?php endforeach ?>	
-				</select>
-				
-				<select class="input required bg-gray-300 py-1 border border-gray-200 rounded">
-				<?php foreach($categories as $k=>$v): ?>
-					<option class="bg-gray-100 font-bold text-xs" value="<?= $v["id"] ?>"><?= $v["article_sous_category_fr"] ?></option>
-				<?php endforeach ?>	
-				</select>
-				
+			<?php foreach($parents as $k=>$parent): ?>
+				<?php if($k==0): ?>
+					<select disabled id="id_article_category" class="input required bg-gray-300 py-1 border border-gray-200 rounded mb-2">
+					<?php foreach($categories as $k=>$v): ?>
+						<option <?= $v['id']==$parent? 'selected': ''  ?> class="bg-gray-100 font-bold text-xs" value="<?= $v["id"] ?>"><?= $v["article_category_ar"] ?></option>
+					<?php endforeach ?>	
+					</select>
+				<?php elseif($k==1): ?>
+					<div class="flex items-center">
+						<div class=""><i class="fas fa-long-arrow-alt-right"></i></div>
+						<select id="id_parent" disabled class="input required bg-gray-300 py-1 border border-gray-200 rounded mb-2 flex-1">
+						<?php foreach($obj->find('', ['conditions AND'=>['id_article_category='=>$parents[0], 'id_parent='=>'-1']], '') as $k=>$v): ?>
+							<option <?= $v['id']==$parent? 'selected': ''  ?> class="bg-gray-100 font-bold text-xs" value="<?= $v["id"] ?>"><?= $v["article_sous_category_ar"] ?></option>
+						<?php endforeach ?>	
+						</select>
+					
+					</div>
+				<?php elseif($k==2): ?>
+					<div class="flex items-center">
+						<div class="flex"><i class="fas fa-long-arrow-alt-right"></i><i class="fas fa-long-arrow-alt-right"></i></div>
+						<select id="id_parent" disabled class="input required bg-gray-300 py-1 border border-gray-200 rounded mb-2">
+						<?php foreach($obj->find('', ['conditions AND'=>['id_article_category='=>$parents[0], 'id_parent='=>$parents[1]]], '') as $k=>$v): ?>
+							<option <?= $v['id']==$parent? 'selected': ''  ?> class="bg-gray-100 font-bold text-xs" value="<?= $v["id"] ?>"><?= $v["article_sous_category_ar"] ?></option>
+						<?php endforeach ?>	
+						</select>
+					</div>
+				<?php endif ?>
+			<?php endforeach ?>		
 			</div>
-			<?php endif ?>					
+							
 		</div>
 		
 		<hr class="mb-6">
-		
+
 		<div class="flex items-center p-4 gap-2">
-			<button class="create rounded border py-2 px-3 bg-blue-500 text-white text-xs font-bold" data-form="sous_category_form" data-controller="Article_Category">
+			<button class="create rounded border py-2 px-3 bg-blue-500 text-white text-xs font-bold" data-form="sous_category_form" data-controller="Article_Sous_Category">
 				<i class="far fa-save"></i> Enregistrer
 			</button>
 			<button class="close rounded border py-2 px-3 bg-gray-500 text-white text-xs font-bold" data-target="my_modal">

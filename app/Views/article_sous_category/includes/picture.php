@@ -6,7 +6,7 @@
 	<i class="far fa-trash-alt"></i>
 </button>
 <input class="hidden" type="file" id="upload_file_category" data-unique="1" data-uid="<?= $UID ?>" data-folder="sous_category">
-<button class="reload_file_category hover:bg-red-400 hover:text-white absolute bottom-0 left-0 m-4 border border-gray-300 rounded py-1 px-2 text-red-500" data-uid="<?= $UID ?>">
+<button class="hide reload_file_category hover:bg-red-400 hover:text-white absolute bottom-0 left-0 m-4 border border-gray-300 rounded py-1 px-2 text-red-500" data-uid="<?= $UID ?>">
 	reload
 </button>
 

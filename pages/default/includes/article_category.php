@@ -169,12 +169,32 @@
 		$(document).on('click','.sous_category_edit', function(e){
 			e.preventDefault();
 
+			var categories = [];
+			$(".item").each(function(index){
+				if($(this).hasClass("bg-yellow-200") ){
+					categories.push($(this).data('id'));
+				}
+			});
+
+			if($(this).parent().parent().parent().hasClass('lavel-1')){
+				categories.splice(1, 2);
+			}
+		
+			if($(this).parent().parent().parent().hasClass('lavel-2')){
+				categories.splice(2, 1);
+			}	
+
+			if($(this).parent().parent().parent().hasClass('lavel-3')){
+				categories.splice(3, 1);
+			}
+
 			var id_category = $(this).data("id");
 			var data = {
 				'controler' 	 		: 	'Article_Sous_Category',
 				'method'				:	'edit',
 				'params'				:	{
-					'id'	:	$(this).data('id')
+					'id'			:	$(this).data('id'),
+					'categories'	:	categories
 				}
 			};
 			$("html, body").animate({ scrollTop: 0 }, "slow");
@@ -206,15 +226,31 @@
 
 		$(document).on('click','.sous_category_add', function(){
 
-			var id_category = $(this).data("id");
-			var target = $(this).data("target");
+			var categories = [];
+			$(".item").each(function(index){
+				if($(this).hasClass("bg-yellow-200") ){
+					categories.push($(this).data('id'));
+				}
+			});
+
+			if($(this).parent().parent().parent().hasClass('lavel-1')){
+				categories.splice(1, 2);
+			}
+		
+			if($(this).parent().parent().parent().hasClass('lavel-2')){
+				categories.splice(2, 1);
+			}	
+
+			if($(this).parent().parent().parent().hasClass('lavel-3')){
+				categories.splice(3, 1);
+			}
+
 			var data = {
 				'controler' 	 		: 	'Article_Sous_Category',
-				'method'				:	'add'
+				'method'				:	'add',
+				'params'				:	{'categories':categories}
 			};
 
-			$('.'+target).html('<div class="p-4 bg-green-100 border border-green-300 text-green-800"><i class="fas fa-sync fa-spin"></i> Loading...</div>');
-			
 			$.ajax({
 				type		: 	"POST",
 				url			: 	"pages/default/ajax/Ajax.php",
