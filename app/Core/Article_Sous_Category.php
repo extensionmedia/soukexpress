@@ -89,7 +89,75 @@ class Article_Sous_Category extends Modal{
 		}
 		return $html;
 	}
-	
+
+	/** Avatar Section*/
+	public function avatar($params){
+		if(!isset($params['UID'])) return $this->default_avatar;
+		
+		$dS = DIRECTORY_SEPARATOR;
+		$dir = $_SESSION["UPLOAD_FOLDER"]."sous_category".$dS.$params['UID'].$dS;
+		if(file_exists($dir)){
+			foreach(scandir($dir) as $file){
+				if($file <> "." and $file <> ".."){
+					return "http://".$_SESSION["STATICS"]."sous_category/".$params['UID']."/".$file;
+				}
+			}	
+		}else{
+			return $this->default_avatar;
+		}
+
+	}
+
+	public function remove_avatar($params){
+		
+		$dS = DIRECTORY_SEPARATOR;
+		$dir = $_SESSION["UPLOAD_FOLDER"]."sous_category".$dS.$params['UID'].$dS;
+		if(file_exists($dir)){
+			$it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+			$files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+			foreach($files as $file) {
+				unlink($file->getRealPath());
+			}
+
+			rmdir($dir);	
+
+			$data = $this->find('',['conditions'=>['UID='=>$params['UID']]],'');
+
+			if( count( $data ) ){
+				$this->save([
+					'id'=>$data[0]['id'], 
+					'image_url'=> $this->default_avatar
+				]);
+			}
+		}
+		return "success";
+		
+	}
+
+	public function edit($params = []){
+		$category = $this->find('', ['conditions'=>['id='=>$params['id']]], 'article_sous_category')[0];
+		$parent = $this->find('', ['conditions AND'=>['id_parent='=>"-1", 'id_article_category='=>$category['id_article_category']],'order'=>'ord asc'], 'article_sous_category');
+		$params = [
+			'categories'		=>	$this->find('', ['order'=>'ord asc'], 'article_category'),
+			'sous_category'		=>	$category,
+			'parent'			=>	$category['id_parent']=="-1"? []: (count($parent)? $parent: []),
+			'obj'				=>	new Article_Sous_Category,
+			'UID'				=>	$category['UID']
+		];
+		$view = new View("article_sous_category.edit");
+		return $view->render($params); 
+	}
+
+	public function add($params = []){
+		$params = [
+			'categories'	=>	$this->find('', ['order'=>'ord asc'], ''),
+			'UID'			=>	 substr( md5( uniqid('auth', true) ),0,8),
+			'obj'			=>	new Article_Sous_Category,
+		];
+		$view = new View("article_sous_category.add");
+		return $view->render($params); 
+	}
+
 }
 
 $article_sous_category = new Article_Sous_Category;
