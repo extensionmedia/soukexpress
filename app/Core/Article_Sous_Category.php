@@ -169,6 +169,23 @@ class Article_Sous_Category extends Modal{
 		return $this->save($request);
 	}
 
+	public function remove($params){
+		if(isset($params['id'])){
+			$data = $this->find('', ['conditions'=>['id='=>$params['id']]], '');
+			if(count($data)){
+
+				$dS = DIRECTORY_SEPARATOR;
+				$dir = $_SESSION["UPLOAD_FOLDER"]."sous_category".$dS.$data[0]['UID'].$dS;
+				if(file_exists($dir)){
+					array_map('unlink', glob("$dir/*.*"));
+					rmdir($dir);
+				}
+				return $this->delete($data[0]['id']);
+			}
+		}
+		return 0;
+	}
+
 }
 
 $article_sous_category = new Article_Sous_Category;
