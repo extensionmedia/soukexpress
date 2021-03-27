@@ -11,6 +11,7 @@ class Article_Sous_Category extends Modal{
 			parent::__construct();
 			$this->setTableName(strtolower($this->tableName));
 
+			/*
 			foreach($this->find() as $c){
 				$filesDirectory = $_SESSION["UPLOAD_FOLDER"]."sous_category".DIRECTORY_SEPARATOR.$c["UID"].DIRECTORY_SEPARATOR;
 				foreach(scandir($filesDirectory) as $k=>$v){
@@ -23,6 +24,7 @@ class Article_Sous_Category extends Modal{
 					}
 				}
 			}
+			*/
 
 		}catch(Exception $e){
 			die($e->getMessage());
