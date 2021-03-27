@@ -130,7 +130,17 @@
 				}).done(function(response){
 					if(response.code == 1){
 						$('.close').trigger('click');
-						$('.load_categories').trigger('click');
+						var items = [];
+						$('.item').each(function(){
+							if($(this).hasClass('bg-yellow-200')){
+								items.push($(this));
+							}
+						});
+						if(items.length == 1){
+							items[0].trigger('click');
+						}else{
+							items[items.length-2].trigger('click');
+						}
 					}
 				}).fail(function(xhr){
 					alert("Error");
