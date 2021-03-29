@@ -121,6 +121,9 @@ class Article_Category extends Modal{
 	
 	public function create($params){
 		$params['image_url'] = $this->avatar(['UID'=>$params['UID']]);
+		$params['article_category_fr'] = addslashes($params['article_category_fr']);
+		$params['article_category_ar'] = addslashes($params['article_category_ar']);
+		$params['article_category_es'] = addslashes($params['article_category_es']);
 		return $this->save($params);
 	}
 
@@ -134,9 +137,12 @@ class Article_Category extends Modal{
 		return $view->render($params); 
 	}	
 	
-	public function update($request){
-		$request['image_url'] = $this->avatar(['UID'=>$request['UID']]);
-		return $this->save($request);
+	public function update($params){
+		$params['image_url'] = $this->avatar(['UID'=>$params['UID']]);
+		$params['article_category_fr'] = addslashes($params['article_category_fr']);
+		$params['article_category_ar'] = addslashes($params['article_category_ar']);
+		$params['article_category_es'] = addslashes($params['article_category_es']);
+		return $this->save($params);
 	}
 	
 	public function remove($params){
