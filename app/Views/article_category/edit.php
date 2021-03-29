@@ -34,7 +34,7 @@
 			<div class="form md:flex items-center mb-6 gap-2">
 				<div class="w-36 text-right text-gray-700 text-xs"></div>
 				<label class="flex items-center gap-2"> 
-					<input id="status" type="checkbox" class="input" <?php if($category['status']): ?> checked <?php endif ?></input>
+					<input id="status" type="checkbox" class="input" <?php if($category['status']): ?> checked <?php endif ?>>
 					<span class="text-xs font-bold">Status</span>
 				</label>
 			</div>

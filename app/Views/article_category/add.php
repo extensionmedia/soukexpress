@@ -31,6 +31,13 @@
 				<div class="form md:flex items-center mb-6 gap-2">
 					<div class="w-36 text-right text-gray-700 text-xs"></div>
 					<label class="flex items-center gap-2"> 
+						<input id="status" type="checkbox" class="input" checked>
+						<span class="text-xs font-bold">Status</span>
+					</label>
+				</div>
+				<div class="form md:flex items-center mb-6 gap-2">
+					<div class="w-36 text-right text-gray-700 text-xs"></div>
+					<label class="flex items-center gap-2"> 
 						<input id="is_visible_on_web" type="checkbox" class="input">
 						<span class="text-xs font-bold">Publier sur le Web</span>
 					</label>
