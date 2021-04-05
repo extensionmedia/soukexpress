@@ -30,7 +30,7 @@ $ob = new $table_name();
 	</div>
 	<div class="col_9">
 		<div class="row" style="margin-top: 10px">
-			<div class="flex items-center gap-1">
+			<div class="flex items-center gap-1 filters">
 				<select id="this_article_category" data="category" class="max-w-xs py-1">
 					<option selected value="-1"> --  Catégorie  -- </option>
 						<?php require_once($core."Article_Category.php"); 
@@ -75,9 +75,6 @@ $ob = new $table_name();
 				}
 			}
 			var that = $(this);
-			//$(".content").append('<div class="loading" style="position:fixed; z-index: 9999999; width: 100%; top: 0px;"><div style="margin: 10px auto; width: 250px" class="animated bounce"><div style="background-color:green; color:white" class="info info-success info-dismissible"> <div class="info-message"> Chargement ...! </div> <a href="#" class="close" data-dismiss="info" aria-label="close">&times;</a></div> 	</div></div>');
-			
-			
 			$.ajax({
 				type		: 	"POST",
 				url			: 	"pages/default/ajax/Ajax.php",
@@ -123,6 +120,56 @@ $ob = new $table_name();
 
 		});
 
+		$(".refresh_articles").on('click', function(){
+			var ids = [];
+			$('.filters select').each(function(e){
+				ids.push($(this).val());
+			});
 
+			var current = $(".current").html();
+			var pearPage = $("#showPerPage").val();
+			var sort_by = $("#sort_by").html();
+			var request = $("#request").val();
+			
+			var style = $(".style").find(".checked").val();
+			
+			var data = {
+					't_n' : $(this).val(),
+					'current'	:	current,
+					'p_p'		:	pearPage,
+					'sort_by'	:	sort_by,
+					'request'	:	request,
+					'style'		:	style,
+					'filter'	:	ids
+				};
+			
+			var filter = {};
+			$("._select select").each(
+				function(){
+					if($(this).val() !== "-1"){
+						filter[$(this).attr("data")] = $(this).val();
+					}
+
+				}
+			);
+			
+			if(Object.keys(filter).length > 0 ){
+				data.filter = filter;
+			}
+			if($(this).hasClass("sub")){
+				data.sub = 1;
+			}
+			var tag = $(this).val().toLocaleLowerCase();
+			
+			$(".modal").addClass("show").html("<div class='modal-content' style='width:75px; opacity:0.9'><i style='font-size:30px;' class='fas fa-cog fa-spin'></i></div>");
+			$(".row."+tag).html("");
+
+			$.post("pages/default/ajax/"+tag+"/get.php",{'data':data},function(response){
+				$(".row."+tag).html(response);
+				$(".modal").removeClass("show");	
+			});
+
+
+		});
 	});
 </script>
