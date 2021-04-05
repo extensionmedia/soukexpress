@@ -161,6 +161,14 @@ class Article_Category extends Modal{
 		}
 		return 0;
 	}
+
+	public function options($params){
+		$options = "<option value='-1'>Sous Catégories</option>";
+		foreach($this->find('', ['order'=>'ord desc'], '') as $category){
+			$options .= "<option value='".$category["id"]."'>".$category["article_category_ar"]."</option>";
+		}
+
+	}
 	
 }
 

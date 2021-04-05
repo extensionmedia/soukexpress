@@ -192,6 +192,21 @@ class Article_Sous_Category extends Modal{
 		return 0;
 	}
 
+	public function options($params){
+		$options = "";
+
+		if(isset($params['id_article_category']))
+			$data = $this->find('', ['conditions AND'=>['id_parent='=>'-1', 'id_article_category='=>$params['id_article_category']], 'order'=>'ord desc'], '');
+
+		if(isset($params['id_article_sous_category']))
+			$data = $this->find('', ['conditions'=>['id_parent='=>$params['id_article_sous_category']], 'order'=>'ord desc'], '');
+		
+		foreach($data as $sous_category){
+			$options .= "<option value='".$sous_category["id"]."'>".$sous_category["article_sous_category_ar"]."</option>";
+		}
+		return $options;
+	}
+
 }
 
 $article_sous_category = new Article_Sous_Category;
