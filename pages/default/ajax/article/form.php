@@ -13,15 +13,6 @@ if(isset($_POST["id"])){
 	require_once($core.$table_name.".php");
 	$ob = new $table_name();
 	
-	
-	/*
-	$i=1;
-	foreach($ob->fetchAll() as $k=>$v){
-		$ob->save(array("id"=>$v["id"], "display_order"=>$i),"article");
-			$i++;
-	}	
-	*/
-	
 	$ob->id = $_POST["id"];
 	$id = $_POST["id"];
 	
@@ -35,7 +26,6 @@ if(isset($_POST["id"])){
 	require_once($core.$table_name.".php");
 	$ob = new $table_name();
 }
-//var_dump($data);
 
 ?>
 <div class="row page_title">
@@ -56,68 +46,238 @@ if(isset($_POST["id"])){
 			<a href="" class="active"><i class="fas fa-folder-open"></i> Détails</a>
 			<a href="" class="refresh_tarif_achat" data="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"  data-id="<?= ($action === "edit")? $data["id"] : 0 ?>"><i class="fas fa-shopping-cart"></i> Tarif Achat</a>
 			<a href="" class="refresh_tarif_vente" data="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"  data-id="<?= ($action === "edit")? $data["id"] : 0 ?>"><i class="fas fa-shopping-basket"></i> Tarif Vente</a>
-			<a  href="" class="show_files article" data="<?= ($action === "edit")? ($data["UID"] !== "")? $data["UID"] : substr($formToken,0,8) : substr($formToken,0,8) ?>"><i class="fas fa-images"></i> Images</a>
+			<a  href="" class="show_files article" data="<?= ($action === "edit")? ($data["UID"] !== ""? $data["UID"] : substr($formToken,0,8)) : substr($formToken,0,8) ?>"><i class="fas fa-images"></i> Images</a>
 		</div>
 	</div>
 	
 	<div class="panel-content" style="padding: 0px">
 		
 		<div class="tab-content">
-			<div class="row  <?= strtolower($table_name) ?>" style="margin-top: 25px">
-			<?= ($action === "edit")? "<input class='form-element' type='hidden' id='id' value='".$id."'>" : "" ?>
-				<input class='form-element' type='hidden' id='UID' value='<?= ($action === "edit")? (!is_null($data["UID"]))? $data["UID"] : substr($formToken,0,8) : substr($formToken,0,8) ?>'>
+			<div class="flex <?= strtolower($table_name) ?>" style="margin-top: 25px">
+				<div class="flex-1">
+
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_4">
+							<label for="code">Code</label>
+							<input class="form-element required" type="text" placeholder="Code" id="code" value="<?= ($action === "edit")? $data["code"] : intval($ob->getLastID())+1 ?>">
+						</div>
+						<div class="col_4">
+							<label for="barcode">Barcode</label>
+							<input class="form-element" type="text" placeholder="BarCode" id="barcode" value="<?= ($action === "edit")? $data["barcode"] : "" ?>">
+						</div>
+						<div class="col_4">
+							<label for="code_fournisseur">Code Fournisseur</label>
+							<input class="form-element" type="text" placeholder="Code Fournisseur" id="code_fournisseur" value="<?= ($action === "edit")? $data["code_fournisseur"] : "" ?>">
+						</div>
+					</div>
+
+					<!-- Designation -->
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_4">
+							<label for="libelle_fr">Désignation (fr)</label>
+							<input class="form-element required" type="text" placeholder="Désignation (fr)" id="libelle_fr" value="<?= ($action === "edit")? $data["libelle_fr"]: "" ?>">
+						</div>
+						<div class="col_4">
+							<label for="barcode">Désignation (es)</label>
+							<input class="form-element required" type="text" placeholder="Désignation (es)" id="libelle_es" value="<?= ($action === "edit")? $data["libelle_es"]: ""  ?>">
+						</div>
+						<div class="col_4">
+							<label for="code_fournisseur">Désignation (ar)</label>
+							<input class="form-element required" type="text" placeholder="Désignation (ar)" id="libelle_ar" value="<?= ($action === "edit")? $data["libelle_ar"]: "" ?>">
+						</div>
+					</div>
+					
+					<!-- Type -->
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_3">
+							<label for="id_article_type">Type</label>
+							<select id="id_article_type" class="form-element required">
+								<option selected value="-1"></option>
+								<?php 
+									require_once($core."Article_Type.php");
+									foreach($article_type->find(null, array("order"=>"article_type_fr"), null) as $k=>$v){
+								?>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_type"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_type_fr"] ?> </option>
+								<?php } ?>
+							</select>
+						</div>
+						
+						<div class="col_3">
+							<label for="id_article_udm">Unité de Mesure</label>
+							<select id="id_article_udm" class="form-element required">
+								<option selected value="-1"></option>
+								<?php 
+									require_once($core."Article_UDM.php");
+									foreach($article_udm->find(null, array("order"=>"article_udm_fr"), null) as $k=>$v){
+								?>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_udm"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_udm_fr"] . " (" . $v["ABR_fr"] . ")" ?> </option>
+								<?php } ?>
+							</select>
+						</div>
+						
+						<div class="col_1">
+							<label for="id_tva">TVA</label>
+							<select id="id_tva" class="form-element required">
+								<option selected value="-1"></option>
+								<?php 
+									require_once($core."Article_TVA.php");
+									foreach($article_tva->find(null, array("order"=>"article_tva"), null) as $k=>$v){
+								?>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_tva"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_tva"] ?> </option>
+								<?php } ?>
+							</select>
+						</div>
+						
+						<div class="col_2">
+							<label for="id_article_status">Status</label>
+							<select id="id_article_status" class="form-element required">
+								<option selected value="-1"></option>
+								<?php 
+									require_once($core."Article_Status.php");
+									foreach($article_status->find(null, array("order"=>"article_status_fr"), null) as $k=>$v){
+								?>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_status"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_status_fr"] ?> </option>
+								<?php } ?>
+							</select>
+						</div>
+						
+						<div class="col_3">
+							<label for="id_article_marque">Marque</label>
+							<select id="id_article_marque" class="form-element">
+								<option selected value="-1"></option>
+								<?php 
+									require_once($core."Article_Marque.php");
+									foreach($article_marque->find(null, array("conditions"=>array("status="=>1), "order"=>"article_marque"), null) as $k=>$v){
+								?>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_marque"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_marque"] ?> </option>
+								<?php } ?>
+							</select>
+						</div>
+						
+					</div>
+					
+					<!-- Poid -->
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_6">
+							<div class="row">
+								<div class="col_4-inline">
+									<label for="poid">Poid (Kg)</label>
+									<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
+								</div>
+								<div class="col_4-inline">
+									<label for="poid_caisse">Poid en Caisse (Kg)</label>
+									<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
+								</div>
+								<div class="col_4-inline">
+									<label for="qte_caisse">Unité en Caisse</label>
+									<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_6">
+							<div class="row">
+								<div class="col_4-inline">
+									<label for="poid">Poid (Kg)</label>
+									<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
+								</div>
+								<div class="col_4-inline">
+									<label for="poid_caisse">Poid en Caisse (Kg)</label>
+									<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
+								</div>
+								<div class="col_4-inline">
+									<label for="qte_caisse">Unité en Caisse</label>
+									<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_12-inline">
+							<h3>Commande</h3>						
+						</div>
+					</div>
+
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_6">
+							<div class="row">
+								<div class="col_4-inline">
+									<label for="poid">Quantité Min</label>
+									<input id="qte_min" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_min"] : "0" ?>">
+								</div>
+								<div class="col_4-inline">
+									<label for="poid">Quantité Max</label>
+									<input id="qte_max" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_max"] : "0" ?>">
+								</div>
+							</div>						
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_12-inline">
+							<div class="row" style="margin-bottom: 20px;">
+								<div class="col_12">
+									<label for="is_allow_stock_negative">
+										<input class="form-element" type="checkbox" id="is_allow_stock_negative" <?= ($action === "edit")? ($data["is_allow_stock_negative"])? "checked" : "" : "" ?>> Permettre Stock négative
+									</label>					
+								</div>
+							</div>	
+							<div class="row" style="margin-bottom: 20px;">
+								<div class="col_12">
+									<label for="is_prix_bloquer">
+										<input class="form-element" type="checkbox" id="is_prix_bloquer" <?= ($action === "edit")? ($data["is_prix_bloquer"])? "checked" : "" : "" ?>> Prix bloqué
+									</label>					
+								</div>
+							</div>
+							
+							<div class="row" style="margin-bottom: 20px;">
+								<div class="col_12">
+									<label for="is_sur_commande">
+										<input class="form-element" type="checkbox" id="is_sur_commande" <?= ($action === "edit")? ($data["is_sur_commande"])? "checked" : "" : "" ?>> Sur Commande
+									</label>					
+								</div>
+							</div>
+							
+							<div class="row" style="margin-bottom: 20px;">
+								<div class="col_12">
+									<label for="is_new">
+										<input class="form-element" type="checkbox" id="is_new" <?= ($action === "edit")? ($data["is_new"])? "checked" : "" : "" ?>> Marqué Nouveau
+									</label>					
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-bottom: 20px">
+						<div class="col_4">
+							<label for="display_order" style="display:block">Ordre الترتيب</label>
+							<input class="form-element required" style="text-align: center; font-size: 18px; max-width: 95px; font-weight: bold" type="number" placeholder="0" id="display_order" value="<?= ($action === "edit")? $data["display_order"]: 0 ?>">
+						</div>
+					</div>
 				
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_4">
-						<label for="code">Code</label>
-						<input class="form-element required" type="text" placeholder="Code" id="code" value="<?= ($action === "edit")? $data["code"] : intval($ob->getLastID())+1 ?>">
-					</div>
-					<div class="col_4">
-						<label for="barcode">Barcode</label>
-						<input class="form-element" type="text" placeholder="BarCode" id="barcode" value="<?= ($action === "edit")? $data["barcode"] : "" ?>">
-					</div>
-					<div class="col_4">
-						<label for="code_fournisseur">Code Fournisseur</label>
-						<input class="form-element" type="text" placeholder="Code Fournisseur" id="code_fournisseur" value="<?= ($action === "edit")? $data["code_fournisseur"] : "" ?>">
-					</div>
-				</div>
-				<?php
-					if($action === "edit"){
-						$a = explode("//", $data["libelle_fr"]);
-					} 
-				?>
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_4">
-						<label for="libelle_fr">Désignation (fr)</label>
-						<input class="form-element required" type="text" placeholder="Désignation (fr)" id="libelle_fr" value="<?= ($action === "edit")? (count($a)>1)? $a[1]: $data["libelle_fr"]: "" ?>">
-					</div>
-					<div class="col_4">
-						<label for="barcode">Désignation (es)</label>
-						<input class="form-element required" type="text" placeholder="Désignation (es)" id="libelle_es" value="<?= ($action === "edit")? (count($a)>1)? $a[2]: $data["libelle_es"]: ""  ?>">
-					</div>
-					<div class="col_4">
-						<label for="code_fournisseur">Désignation (ar)</label>
-						<input class="form-element required" type="text" placeholder="Désignation (ar)" id="libelle_ar" value="<?= ($action === "edit")? (count($a)>1)? $a[0]: $data["libelle_ar"]: "" ?>">
-					</div>
-				</div>
-				
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_4-inline">
+				</div> <!-- content-->
+
+				<!-- Categories -->
+				<div class="w-96 flex flex-col gap-4 px-4">
+					<div class="w-full">
 						<label for="id_article_category">Article Catégorie</label>
-						<select id="id_article_category" class="form-element required">
+						<select id="id_article_category" class="form-element py-2 px-2 bg-gray-100 rounded">
 							<option selected value="-1"></option>
 							<?php 
 								require_once($core."Article_Category.php");
 								foreach($article_category->find(null, array("conditions"=>array("status="=>1), "order"=>"article_category_fr"), null) as $k=>$v){
 							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_category"])? "selected" : "" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_category_fr"] . " " . $v["article_category_ar"] ?> </option>
+							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_category"]? "selected" : "") : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
 							<?php } ?>
 						</select>
 					</div>
 					
-					<div class="col_4-inline">
+					<div class="w-full">
 						<label for="id_article_sous_category">Article Sous Catégorie</label>
-						<select id="id_article_sous_category" class="form-element">
+						<select id="id_article_sous_category" class="form-element py-2 px-2 bg-gray-100 rounded">
 							<option selected value="-1"> --  Sous-Catégorie  -- </option>
 							
 							<?php 
@@ -134,7 +294,7 @@ if(isset($_POST["id"])){
 											$selected = ($v["id"] === $data["id_parent"])? "selected" : "";
 										}
 										
-										echo '<option '. $selected .' value="' . $v["id"] . '">'.$v["article_sous_category_fr"] .' '. $v["article_sous_category_ar"]. ' </option>';
+										echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
 									}
 								}
 							?>
@@ -143,9 +303,9 @@ if(isset($_POST["id"])){
 						</select>
 					</div>
 					
-					<div class="col_4-inline">
+					<div class="w-full">
 						<label for="article_parent">Article Sous Catégorie</label>
-						<select id="article_parent" class="form-element">
+						<select id="article_parent" class="form-element py-2 px-2 bg-gray-100 rounded">
 							<option selected value="-1"> --  Sous-Catégorie  -- </option>
 							
 							<?php 
@@ -158,188 +318,17 @@ if(isset($_POST["id"])){
 									foreach($d as $k=>$v){
 											$selected = ($v["id"] === $data["id_article_sous_category"])? "selected" : "";
 										
-										echo '<option '. $selected .' value="' . $v["id"] . '">'.$v["article_sous_category_fr"] .' '. $v["article_sous_category_ar"]. ' </option>';
+										echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
 									}
 								}
 							?>
 							
 						</select>
 					</div>
-									
 				</div>
-				
-				<!-- Type -->
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_3">
-						<label for="id_article_type">Type</label>
-						<select id="id_article_type" class="form-element required">
-							<option selected value="-1"></option>
-							<?php 
-								require_once($core."Article_Type.php");
-								foreach($article_type->find(null, array("order"=>"article_type_fr"), null) as $k=>$v){
-							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_type"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_type_fr"] ?> </option>
-							<?php } ?>
-						</select>
-					</div>
-					
-					<div class="col_3">
-						<label for="id_article_udm">Unité de Mesure</label>
-						<select id="id_article_udm" class="form-element required">
-							<option selected value="-1"></option>
-							<?php 
-								require_once($core."Article_UDM.php");
-								foreach($article_udm->find(null, array("order"=>"article_udm_fr"), null) as $k=>$v){
-							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_udm"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_udm_fr"] . " (" . $v["ABR_fr"] . ")" ?> </option>
-							<?php } ?>
-						</select>
-					</div>
-					
-					<div class="col_1">
-						<label for="id_tva">TVA</label>
-						<select id="id_tva" class="form-element required">
-							<option selected value="-1"></option>
-							<?php 
-								require_once($core."Article_TVA.php");
-								foreach($article_tva->find(null, array("order"=>"article_tva"), null) as $k=>$v){
-							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_tva"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_tva"] ?> </option>
-							<?php } ?>
-						</select>
-					</div>
-					
-					<div class="col_2">
-						<label for="id_article_status">Status</label>
-						<select id="id_article_status" class="form-element required">
-							<option selected value="-1"></option>
-							<?php 
-								require_once($core."Article_Status.php");
-								foreach($article_status->find(null, array("order"=>"article_status_fr"), null) as $k=>$v){
-							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_status"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_status_fr"] ?> </option>
-							<?php } ?>
-						</select>
-					</div>
-					
-					<div class="col_3">
-						<label for="id_article_marque">Marque</label>
-						<select id="id_article_marque" class="form-element">
-							<option selected value="-1"></option>
-							<?php 
-								require_once($core."Article_Marque.php");
-								foreach($article_marque->find(null, array("conditions"=>array("status="=>1), "order"=>"article_marque"), null) as $k=>$v){
-							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_marque"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_marque"] ?> </option>
-							<?php } ?>
-						</select>
-					</div>
-					
-				</div>
-				
-				<!-- Poid -->
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_6">
-						<div class="row">
-							<div class="col_4-inline">
-								<label for="poid">Poid (Kg)</label>
-								<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
-							</div>
-							<div class="col_4-inline">
-								<label for="poid_caisse">Poid en Caisse (Kg)</label>
-								<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
-							</div>
-							<div class="col_4-inline">
-								<label for="qte_caisse">Unité en Caisse</label>
-								<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_6">
-						<div class="row">
-							<div class="col_4-inline">
-								<label for="poid">Poid (Kg)</label>
-								<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
-							</div>
-							<div class="col_4-inline">
-								<label for="poid_caisse">Poid en Caisse (Kg)</label>
-								<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
-							</div>
-							<div class="col_4-inline">
-								<label for="qte_caisse">Unité en Caisse</label>
-								<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_12-inline">
-						<h3>Commande</h3>						
-					</div>
-				</div>
-
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_6">
-						<div class="row">
-							<div class="col_4-inline">
-								<label for="poid">Quantité Min</label>
-								<input id="qte_min" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_min"] : "0" ?>">
-							</div>
-							<div class="col_4-inline">
-								<label for="poid">Quantité Max</label>
-								<input id="qte_max" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_max"] : "0" ?>">
-							</div>
-						</div>						
-					</div>
-				</div>
-				
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_12-inline">
-						<div class="row" style="margin-bottom: 20px;">
-							<div class="col_12">
-								<label for="is_allow_stock_negative">
-									<input class="form-element" type="checkbox" id="is_allow_stock_negative" <?= ($action === "edit")? ($data["is_allow_stock_negative"])? "checked" : "" : "" ?>> Permettre Stock négative
-								</label>					
-							</div>
-						</div>	
-						<div class="row" style="margin-bottom: 20px;">
-							<div class="col_12">
-								<label for="is_prix_bloquer">
-									<input class="form-element" type="checkbox" id="is_prix_bloquer" <?= ($action === "edit")? ($data["is_prix_bloquer"])? "checked" : "" : "" ?>> Prix bloqué
-								</label>					
-							</div>
-						</div>
-						
-						<div class="row" style="margin-bottom: 20px;">
-							<div class="col_12">
-								<label for="is_sur_commande">
-									<input class="form-element" type="checkbox" id="is_sur_commande" <?= ($action === "edit")? ($data["is_sur_commande"])? "checked" : "" : "" ?>> Sur Commande
-								</label>					
-							</div>
-						</div>
-						
-						<div class="row" style="margin-bottom: 20px;">
-							<div class="col_12">
-								<label for="is_new">
-									<input class="form-element" type="checkbox" id="is_new" <?= ($action === "edit")? ($data["is_new"])? "checked" : "" : "" ?>> Marqué Nouveau
-								</label>					
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row" style="margin-bottom: 20px">
-					<div class="col_4">
-						<label for="display_order" style="display:block">Ordre الترتيب</label>
-						<input class="form-element required" style="text-align: center; font-size: 18px; max-width: 95px; font-weight: bold" type="number" placeholder="0" id="display_order" value="<?= ($action === "edit")? $data["display_order"]: 0 ?>">
-					</div>
-				</div>
-				
-			</div> <!-- ROW-->
+			</div>
+			<?= ($action === "edit")? "<input class='form-element' type='hidden' id='id' value='".$id."'>" : "" ?>
+			<input class='form-element' type='hidden' id='UID' value='<?= ($action === "edit")? (!is_null($data["UID"]))? $data["UID"] : substr($formToken,0,8) : substr($formToken,0,8) ?>'>
 		</div>
 		
 		<div class="tab-content" style="display: none" >

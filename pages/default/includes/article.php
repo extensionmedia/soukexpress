@@ -45,7 +45,7 @@ $ob = new $table_name();
 	</div>
 </div>
 
-<div class="row <?= strtolower($table_name) ?>">
+<div class="row articles">
 	<?php 	
 	
 	$args = array(
@@ -83,7 +83,7 @@ $ob = new $table_name();
 			}).done(function(response){
 				that.nextAll('select').remove();
 				if(response.msg !== ''){
-					that.parent().append('<select class="this_article_sous_category max-w-xs py-1"><option value="-1">Sous Categorie</option>' + response.msg + '</select');
+					that.parent().append('<select data="article_sous_category" class="this_article_sous_category max-w-xs py-1"><option value="-1">Sous Categorie</option>' + response.msg + '</select');
 				}
 			}).fail(function(xhr){
 				alert("Error");
@@ -103,28 +103,29 @@ $ob = new $table_name();
 				}
 			}
 			var that = $(this);
-			$.ajax({
-				type		: 	"POST",
-				url			: 	"pages/default/ajax/Ajax.php",
-				data		:	data,
-				dataType	: 	"json",
-			}).done(function(response){
+			if(that.val() == "-1"){
 				that.nextAll('select').remove();
-				if(response.msg !== ''){
-					that.parent().append('<select class="this_article_sous_category max-w-xs py-1"><option value="-1">Sous Categorie</option>' + response.msg + '</select');
-				}
-			}).fail(function(xhr){
-				alert("Error");
-				console.log(xhr.responseText);
-			});
+			}else{
+				$.ajax({
+					type		: 	"POST",
+					url			: 	"pages/default/ajax/Ajax.php",
+					data		:	data,
+					dataType	: 	"json",
+				}).done(function(response){
+					that.nextAll('select').remove();
+					if(response.msg !== ''){
+						that.parent().append('<select data="article_sous_category" class="this_article_sous_category max-w-xs py-1"><option value="-1">Sous Categorie</option>' + response.msg + '</select');
+					}
+				}).fail(function(xhr){
+					alert("Error");
+					console.log(xhr.responseText);
+				});				
+			}
+
 
 		});
 
 		$(".refresh_articles").on('click', function(){
-			var ids = [];
-			$('.filters select').each(function(e){
-				ids.push($(this).val());
-			});
 
 			var current = $(".current").html();
 			var pearPage = $("#showPerPage").val();
@@ -139,13 +140,11 @@ $ob = new $table_name();
 					'p_p'		:	pearPage,
 					'sort_by'	:	sort_by,
 					'request'	:	request,
-					'style'		:	style,
-					'filter'	:	ids
+					'style'		:	style
 				};
 			
 			var filter = {};
-			$("._select select").each(
-				function(){
+			$(".filters select").each(function(){
 					if($(this).val() !== "-1"){
 						filter[$(this).attr("data")] = $(this).val();
 					}
@@ -155,17 +154,12 @@ $ob = new $table_name();
 			
 			if(Object.keys(filter).length > 0 ){
 				data.filter = filter;
-			}
-			if($(this).hasClass("sub")){
-				data.sub = 1;
-			}
-			var tag = $(this).val().toLocaleLowerCase();
-			
-			$(".modal").addClass("show").html("<div class='modal-content' style='width:75px; opacity:0.9'><i style='font-size:30px;' class='fas fa-cog fa-spin'></i></div>");
-			$(".row."+tag).html("");
+			}			
 
-			$.post("pages/default/ajax/"+tag+"/get.php",{'data':data},function(response){
-				$(".row."+tag).html(response);
+			$(".modal").addClass("show").html("<div class='modal-content' style='width:75px; opacity:0.9'><i style='font-size:30px;' class='fas fa-cog fa-spin'></i></div>");
+
+			$.post("pages/default/ajax/article/get.php",{'data':data},function(response){
+				$('.articles').html(response);
 				$(".modal").removeClass("show");	
 			});
 

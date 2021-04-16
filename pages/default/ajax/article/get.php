@@ -25,7 +25,13 @@ if(file_exists($core.$table_name.".php")){
 	if($request !== ""){$conditions["code like "] = "%".$request."%";}
 	
 	if(isset($_POST['data']['filter'])){
-		
+	
+		foreach($_POST['data']['filter'] as $k=>$v){
+			if($k === "category") $conditions["id_article_category = "] = $v;
+			if($k === "article_sous_category") $conditions["id_article_sous_category = "] = $v;
+		}
+
+		/*
 		if(isset($_POST['data']['filter']["category"])){
 			$id_category = $_POST['data']['filter']["category"];
 			if($id_category !== "25"){
@@ -53,10 +59,9 @@ if(file_exists($core.$table_name.".php")){
 				if($k === "marque") $conditions["id_article_marque = "] = $v;
 			}				
 		}
-		
+		*/
 
 	}
-	
 	if(count($conditions)>1){
 		$conditions = array("conditions AND"=>$conditions);	
 	}else{
