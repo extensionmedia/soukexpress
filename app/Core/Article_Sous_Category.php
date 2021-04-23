@@ -207,6 +207,33 @@ class Article_Sous_Category extends Modal{
 		return $options;
 	}
 
+	public function showTree($params){
+		$article_sous_category_id = $params;
+		$data = $this->find('', ['conditions'=> ['id='=>$article_sous_category_id] ], '');
+		$tree = [$article_sous_category_id];
+		if($data){
+			if($data[0]['id_parent'] != '-1'){
+				$data2 = $this->find('', ['conditions'=> ['id='=>$data[0]['id_parent']] ], '');
+				if($data2){
+					array_push($tree, $data[0]['id_parent']);
+					$data3 = $this->find('', ['conditions'=> ['id='=>$data2[0]['id_parent']] ], '');
+					if($data3){
+						array_push($tree, $data2[0]['id_parent']);
+						$data4 = $this->find('', ['conditions'=> ['id='=>$data2[0]['id_parent']] ], '');
+						if($data4){
+							array_push($tree, $data3[0]['id_parent']);
+							$data5 = $this->find('', ['conditions'=> ['id='=>$data2[0]['id_parent']] ], '');
+							if($data5){
+								array_push($tree, $data3[0]['id_parent']);
+							}
+						}
+					}
+				}
+			}
+		}
+		return array_reverse($tree);
+	}
+
 }
 
 $article_sous_category = new Article_Sous_Category;

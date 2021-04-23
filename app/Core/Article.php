@@ -174,7 +174,7 @@ class Article extends Modal{
 						if($columns[$key]["column"] == "id"){
 							$returned .= "<td style='".$style."'><span class='id-ligne'>" . $v[ $columns[$key]["column"] ] . "</span></td>";
 						}elseif($columns[$key]["column"] == "libelle_fr"){
-							$returned .= "<td style='".$style."'>".$v["libelle_fr"] . "<br>".$v["libelle_ar"] . "</td>";
+							$returned .= "<td style='".$style."'>".$v["libelle_ar"] . "</td>";
 						}elseif($columns[$key]["column"] == "id_article_status"){
 							$returned .= "<td style='".$style."'><span class='label label-green'>".$v["article_status_fr"] . "</span></td>";
 						}elseif($columns[$key]["column"] == "prix_achat"){
@@ -192,9 +192,9 @@ class Article extends Modal{
 							$prix_vente = ($prix_vente==="")? "0.00 Dh" : $prix_vente;
 							$returned .= "<td style='".$style."'>" . $prix_vente . "</td>";
 						}elseif($columns[$key]["column"] == "article_category_fr"){
-							$returned .= "<td style='".$style."'>" . $v["article_category_fr"] . "<br>" . $v["article_category_ar"] ."</td>";
+							$returned .= "<td style='".$style."'>" . $v["article_category_ar"] ."</td>";
 						}elseif($columns[$key]["column"] == "article_sous_category_fr"){
-							$returned .= "<td style='".$style."'>" . $v["article_sous_category_fr"] . " [" . $v["id_article_sous_category"] . "] [".$v["id_parent"] . "]" . "<br>" . $v["article_sous_category_ar"] ."</td>";
+							$returned .= "<td style='".$style."'>" . $v["article_sous_category_ar"] ."</td>";
 						}elseif($columns[$key]["column"] == "is_visible_on_web"){
 							$s = ($v["is_visible_on_web"])? "on" : "off";
 							$returned .= "<td style='".$style."'><div data-article-id='" . $v["id"] . "' class='on_off ".$s." is_visible_on_web'></div></td>";

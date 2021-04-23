@@ -33,7 +33,7 @@ if(isset($_POST["id"])){
 		<i class="fas fa-folder-open"></i> Article <span style="font-size: 9px"><?= ($action === "edit")? "<span style='color:red'>" . $data["UID"] . "</span>" : substr($formToken,0,8) ?></span>
 	</div>
 	<div class="col_6-inline actions">
-		<button class="btn btn-green save_form <?= ($action === "edit")? "edit" : "" ?>" data-table="<?= $table_name ?>"><i class="fas fa-save"></i></button>
+		<button class="btn btn-green save_article <?= ($action === "edit")? "edit" : "" ?>" data-table="<?= $table_name ?>"><i class="fas fa-save"></i></button>
 		<button class="btn btn-default close" value="<?= $table_name ?>"><i class="fas fa-times"></i></button>
 	</div>
 </div>
@@ -261,70 +261,88 @@ if(isset($_POST["id"])){
 				</div> <!-- content-->
 
 				<!-- Categories -->
-				<div class="w-96 flex flex-col gap-4 px-4">
-					<div class="w-full">
-						<label for="id_article_category">Article Catégorie</label>
-						<select id="id_article_category" class="form-element py-2 px-2 bg-gray-100 rounded">
-							<option selected value="-1"></option>
-							<?php 
-								require_once($core."Article_Category.php");
-								foreach($article_category->find(null, array("conditions"=>array("status="=>1), "order"=>"article_category_fr"), null) as $k=>$v){
-							?>
-							<option <?= ($action === "edit")? ($v["id"] === $data["id_article_category"]? "selected" : "") : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
-							<?php } ?>
-						</select>
-					</div>
+				<div class="w-96 flex flex-col px-4">
+
+					<!-- Categories -->
+					<label for="id_article_category" class="m-0 p-0">Article Categorie </label>
+					<select id="id_article_category" class="form-element py-2 px-2 bg-gray-100 rounded mb-4">
+						<option selected value="-1"> --  Catégorie  -- </option>
+						<?php 
+							require_once($core."Article_Category.php");
+							foreach($article_category->find(null, ["order"=>"article_category_fr"], null) as $k=>$v){
+						?>
+						<option <?= ($action === "edit")? ($v["id"] === $data["id_article_category"]? "selected" : "") : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
+						<?php } ?>
+					</select>
 					
-					<div class="w-full">
-						<label for="id_article_sous_category">Article Sous Catégorie</label>
-						<select id="id_article_sous_category" class="form-element py-2 px-2 bg-gray-100 rounded">
-							<option selected value="-1"> --  Sous-Catégorie  -- </option>
-							
-							<?php 
-								if($action === "edit"){
-									require_once($core."Article_Sous_Category.php");
-									
-									$cond = array("id_article_category="=>$data["id_article_category"], "id_parent="=>"-1", "status="=>1);
-									$d = $article_sous_category->find(null, array("conditions AND"=>$cond, "order"=>"article_sous_category_fr"), null);
-									
-									foreach($d as $k=>$v){
-										if( $data["id_parent"] === "-1" || is_null($data["id_parent"])){
-											$selected = ($v["id"] === $data["id_article_sous_category"])? "selected" : "";
-										}else{
-											$selected = ($v["id"] === $data["id_parent"])? "selected" : "";
-										}
-										
-										echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
-									}
+					<?php if($action == 'edit'): ?>
+					<!-- Sous Categories -->
+					<select class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+						<option selected value="-1"> --  Sous-Catégorie  -- </option>
+						<?php 
+							if($action === "edit"){
+								require_once($core."Article_Sous_Category.php");
+								if(isset($data["id_article_sous_category"]))
+									$tree = $article_sous_category->showTree( $data["id_article_sous_category"] );
+								else
+									$tree = [];
+
+								$cond = [
+									"id_article_category="	=>	$data["id_article_category"], 
+									"id_parent="			=>	"-1"
+								];
+
+								$d = $article_sous_category->find(null, ["conditions AND"=>$cond, "order"=>"article_sous_category_fr"], null);
+								
+								foreach($d as $k=>$v){
+									$selected = $tree? ($v["id"] === $tree[0]? "selected" : "") : 0;
+									echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
 								}
-							?>
-							
-							
-						</select>
-					</div>
+							}
+						?>
+					</select>
 					
-					<div class="w-full">
-						<label for="article_parent">Article Sous Catégorie</label>
-						<select id="article_parent" class="form-element py-2 px-2 bg-gray-100 rounded">
-							<option selected value="-1"> --  Sous-Catégorie  -- </option>
-							
-							<?php 
-								if($action === "edit"){
-									require_once($core."Article_Sous_Category.php");
-									
-									$cond = array("id_article_category="=>$data["id_article_category"], "id_parent="=>$data["id_parent"], "status="=>1);
-									$d = $article_sous_category->find(null, array("conditions AND"=>$cond, "order"=>"article_sous_category_fr"), null);
-									
-									foreach($d as $k=>$v){
-											$selected = ($v["id"] === $data["id_article_sous_category"])? "selected" : "";
-										
-										echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
-									}
+					<!-- sous sous Categories -->
+					<select class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+						<option selected value="-1"> --  Sous-Catégorie  -- </option>
+						<?php 
+							if($action === "edit"){									
+								$cond = [
+									"id_article_category="	=>	$data["id_article_category"], 
+									"id_parent="			=>	$tree[0]
+								];
+
+								$d = $article_sous_category->find(null, ["conditions AND"=>$cond, "order"=>"article_sous_category_fr"], null);
+								
+								foreach($d as $k=>$v){
+									$selected = $v["id"] === $tree[1]? "selected" : "";
+									$selected = count($tree)>1? ($v["id"] === $tree[1]? "selected" : "") : 0;
+									echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
 								}
-							?>
-							
-						</select>
-					</div>
+							}
+						?>
+					</select>
+
+					<!-- sous sous Categories -->
+					<select class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+						<option selected value="-1"> --  Sous-Catégorie  -- </option>
+						<?php 
+							if($action === "edit"){									
+								$cond = [
+									"id_article_category="	=>	$data["id_article_category"], 
+									"id_parent="			=>	$tree[1]
+								];
+
+								$d = $article_sous_category->find(null, ["conditions AND"=>$cond, "order"=>"article_sous_category_fr"], null);
+								
+								foreach($d as $k=>$v){
+									$selected = count($tree)>1? ($v["id"] === $tree[2]? "selected" : "") : 0;
+									echo '<option '. $selected .' value="' . $v["id"] . '">' . $v["article_sous_category_ar"] . ' </option>';
+								}
+							}
+						?>
+					</select>
+					<?php endif ?>
 				</div>
 			</div>
 			<?= ($action === "edit")? "<input class='form-element' type='hidden' id='id' value='".$id."'>" : "" ?>
@@ -398,3 +416,196 @@ if(isset($_POST["id"])){
 
 <div class="debug"></div>
 
+<script>
+$(document).ready(function(){
+
+	$(document).on('change', '#id_article_category', function(){
+	
+		var id_article_category = $(this).val();
+		var data = {
+			'method'		:	'options',
+			'controler'		:	'Article_Sous_Category',
+			'params'		:	{
+				'id_article_category'	:	id_article_category
+			}
+		}
+		var that = $(this);
+		$.ajax({
+			type		: 	"POST",
+			url			: 	"pages/default/ajax/Ajax.php",
+			data		:	data,
+			dataType	: 	"json",
+		}).done(function(response){
+			that.nextAll('select').remove();
+			if(response.msg !== ''){
+				that.parent().append(`
+					<select data="article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+						<option value="-1">Sous Categorie</option>
+						`+response.msg+`
+					</select>
+				`);
+			}
+		}).fail(function(xhr){
+			alert("Error");
+			console.log(xhr.responseText);
+		});
+	
+	});
+
+	$(document).on('change', ".id_article_sous_category", function(){
+		var id_article_sous_category = $(this).val();
+		var data = {
+			'method'		:	'options',
+			'controler'		:	'Article_Sous_Category',
+			'params'		:	{
+				'id_article_sous_category'	:	id_article_sous_category
+			}
+		}
+		var that = $(this);
+		if(that.val() == "-1"){
+			that.nextAll('select').remove();
+		}else{
+			$.ajax({
+				type		: 	"POST",
+				url			: 	"pages/default/ajax/Ajax.php",
+				data		:	data,
+				dataType	: 	"json",
+			}).done(function(response){
+				that.nextAll('select').remove();
+				if(response.msg !== ''){
+					that.parent().append(`
+					<select data="article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+						<option value="-1">Sous Categorie</option>
+						`+response.msg+`
+					</select>
+				`);
+				}
+			}).fail(function(xhr){
+				alert("Error");
+				console.log(xhr.responseText);
+			});				
+		}
+
+
+	});
+
+	$(document).on('click', '.save_article', function(){
+
+		var selector = $(this).attr("data-table");
+		var columns = {};
+		var success = true;
+
+		var selected = [];
+		var tag;
+
+		$("."+selector).find(".form-element").each(function(){
+			
+			if( $(this).hasClass("required") ){
+				if($(this).val() === "" || $(this).val() === "-1"){
+					$(this).addClass("error");
+					success = false;
+				}else if($(this).hasClass("group")){
+					if($(this).hasClass("checked")){
+						tag = $(this).attr("data-table");
+						columns[tag] = $(this).attr('value');						
+					}
+				}else{
+					$(this).removeClass("error");
+					columns[$(this).attr("id")] = $(this).val();
+				}
+			}else{
+				if($(this).hasClass("on_off")){
+					columns[$(this).attr("id")] = $(this).hasClass("on")? 1 : 0;
+				}else if($(this).hasClass("group")){
+					if($(this).hasClass("checked")){
+						selected.push($(this).attr('value'));
+						tag = $(this).attr("data-table");
+						columns[tag] = selected;						
+					}
+				}else{
+					
+					if($(this).hasClass("collection")){
+						if($(this).is(':checked')){
+							selected.push($(this).attr('value'));
+							tag = $(this).attr("data-table");
+							
+						}
+					}else{
+						if($(this).is(':checkbox')){
+							columns[$(this).attr("id")] = ($(this).is(':checked'))? 1:0;
+						}else{
+							columns[$(this).attr("id")] = $(this).val();
+						}
+					}
+					
+					if(selected.length>0){
+						columns[tag] = selected;
+					}	
+				}		
+			}
+
+		});
+
+		if($("#id").length > 0){
+			columns.id = $("#id").val();
+		}
+
+		var data = {
+			't_n'		:	selector,
+			'columns'	:	columns
+		};
+
+		console.log(columns);
+/*
+		var return_page = ($(this).hasClass("sub"))? selector.toLowerCase() + "_2": selector.toLowerCase();
+		if(success){
+			$.ajax({
+
+				type		: 	"POST",
+				url			: 	"pages/default/ajax/"+selector.toLowerCase()+"/save.php",
+				data		:	data,
+				success 	: 	function(response){
+					if(response === "1"){
+
+						swal("SUCCESS!", "L'élement' a été ajouté!", "success");
+						var data = {
+							"page"	:	"menu",
+							"p"		:	{
+								"s"		:	0,
+								"pp"	:	50
+							}
+						};
+
+						$.ajax({
+
+							type		: 	"POST",
+							url			: 	"pages/default/includes/" + return_page + ".php",
+							data		:	data,
+							success 	: 	function(response){
+												$('.content').html(response);
+												$(".modal").removeClass("show");
+											},
+							error		:	function(response){
+												$(".debug").html("Error : " + response);
+												$(".modal").removeClass("show");
+
+							}
+						});
+					}else{
+						$(".debug").html("Error : " + response);
+					}
+
+				},
+				error		:	function(response){
+									$('.debug').html("Error : " + response);
+									$(".modal").removeClass("show");
+				}
+			});
+		}else{
+			$(".content").append('<div style="position:fixed; z-index: 9999999; width: 100%; top: 0px;"><div style="margin: 10px auto; width: 250px" class="animated bounce"><div class="info info-error info-dismissible"> <div class="info-message"> Vérifier le formulaire ! </div> <a href="#" class="close" data-dismiss="info" aria-label="close">&times;</a></div> 	</div></div>');
+		}
+*/
+	});
+
+});
+</script>
