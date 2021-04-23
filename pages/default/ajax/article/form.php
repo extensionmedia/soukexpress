@@ -97,7 +97,7 @@ if(isset($_POST["id"])){
 									require_once($core."Article_Type.php");
 									foreach($article_type->find(null, array("order"=>"article_type_fr"), null) as $k=>$v){
 								?>
-								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_type"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_type_fr"] ?> </option>
+								<option <?= $action === "edit"? ($v["id"] === $data["id_article_type"]? "selected" : "") : ($v["is_default"]? "selected" : "") ?>  value="<?= $v["id"] ?>"> <?= $v["article_type_fr"] ?> </option>
 								<?php } ?>
 							</select>
 						</div>
@@ -110,7 +110,7 @@ if(isset($_POST["id"])){
 									require_once($core."Article_UDM.php");
 									foreach($article_udm->find(null, array("order"=>"article_udm_fr"), null) as $k=>$v){
 								?>
-								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_udm"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_udm_fr"] . " (" . $v["ABR_fr"] . ")" ?> </option>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_udm"]? "selected" : "") : ($v["is_default"]? "selected" : "") ?>  value="<?= $v["id"] ?>"> <?= $v["article_udm_fr"] . " (" . $v["ABR_fr"] . ")" ?> </option>
 								<?php } ?>
 							</select>
 						</div>
@@ -123,7 +123,7 @@ if(isset($_POST["id"])){
 									require_once($core."Article_TVA.php");
 									foreach($article_tva->find(null, array("order"=>"article_tva"), null) as $k=>$v){
 								?>
-								<option <?= ($action === "edit")? ($v["id"] === $data["id_tva"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_tva"] ?> </option>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_tva"]? "selected" : "") : ($v["is_default"]? "selected" : "") ?>  value="<?= $v["id"] ?>"> <?= $v["article_tva"] ?> </option>
 								<?php } ?>
 							</select>
 						</div>
@@ -136,7 +136,7 @@ if(isset($_POST["id"])){
 									require_once($core."Article_Status.php");
 									foreach($article_status->find(null, array("order"=>"article_status_fr"), null) as $k=>$v){
 								?>
-								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_status"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_status_fr"] ?> </option>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_status"]? "selected" : "") : ($v["is_default"]? "selected" : "") ?>  value="<?= $v["id"] ?>"> <?= $v["article_status_fr"] ?> </option>
 								<?php } ?>
 							</select>
 						</div>
@@ -149,7 +149,7 @@ if(isset($_POST["id"])){
 									require_once($core."Article_Marque.php");
 									foreach($article_marque->find(null, array("conditions"=>array("status="=>1), "order"=>"article_marque"), null) as $k=>$v){
 								?>
-								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_marque"])? "selected" : "" : ($v["is_default"])? "selected" : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_marque"] ?> </option>
+								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_marque"]? "selected" : "") : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_marque"] ?> </option>
 								<?php } ?>
 							</select>
 						</div>
@@ -265,7 +265,7 @@ if(isset($_POST["id"])){
 
 					<!-- Categories -->
 					<label for="id_article_category" class="m-0 p-0">Article Categorie </label>
-					<select id="id_article_category" class="form-element py-2 px-2 bg-gray-100 rounded mb-4">
+					<select id="id_article_category" class="form-element required py-2 px-2 bg-gray-100 rounded mb-4">
 						<option selected value="-1"> --  Catégorie  -- </option>
 						<?php 
 							require_once($core."Article_Category.php");
@@ -277,7 +277,7 @@ if(isset($_POST["id"])){
 					
 					<?php if($action == 'edit'): ?>
 					<!-- Sous Categories -->
-					<select class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+					<select id="id_article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
 						<option selected value="-1"> --  Sous-Catégorie  -- </option>
 						<?php 
 							if($action === "edit"){
@@ -303,7 +303,7 @@ if(isset($_POST["id"])){
 					</select>
 					
 					<!-- sous sous Categories -->
-					<select class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+					<select id="id_article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
 						<option selected value="-1"> --  Sous-Catégorie  -- </option>
 						<?php 
 							if($action === "edit"){									
@@ -324,7 +324,7 @@ if(isset($_POST["id"])){
 					</select>
 
 					<!-- sous sous Categories -->
-					<select class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+					<select id="id_article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
 						<option selected value="-1"> --  Sous-Catégorie  -- </option>
 						<?php 
 							if($action === "edit"){									
@@ -344,9 +344,9 @@ if(isset($_POST["id"])){
 					</select>
 					<?php endif ?>
 				</div>
+				<?= ($action === "edit")? "<input class='form-element' type='hidden' id='id' value='".$id."'>" : "" ?>
+				<input class='form-element' type='hidden' id='UID' value='<?= $action === "edit"? $data["UID"] : substr($formToken,0,8) ?>'>
 			</div>
-			<?= ($action === "edit")? "<input class='form-element' type='hidden' id='id' value='".$id."'>" : "" ?>
-			<input class='form-element' type='hidden' id='UID' value='<?= ($action === "edit")? (!is_null($data["UID"]))? $data["UID"] : substr($formToken,0,8) : substr($formToken,0,8) ?>'>
 		</div>
 		
 		<div class="tab-content" style="display: none" >
@@ -439,7 +439,7 @@ $(document).ready(function(){
 			that.nextAll('select').remove();
 			if(response.msg !== ''){
 				that.parent().append(`
-					<select data="article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+					<select id="id_article_sous_category" data="article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
 						<option value="-1">Sous Categorie</option>
 						`+response.msg+`
 					</select>
@@ -474,7 +474,7 @@ $(document).ready(function(){
 				that.nextAll('select').remove();
 				if(response.msg !== ''){
 					that.parent().append(`
-					<select data="article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
+					<select id="id_article_sous_category" data="article_sous_category" class="id_article_sous_category form-element py-2 px-2 bg-gray-100 rounded mb-4">
 						<option value="-1">Sous Categorie</option>
 						`+response.msg+`
 					</select>
@@ -534,7 +534,13 @@ $(document).ready(function(){
 						if($(this).is(':checkbox')){
 							columns[$(this).attr("id")] = ($(this).is(':checked'))? 1:0;
 						}else{
-							columns[$(this).attr("id")] = $(this).val();
+							if($(this).attr("id") == "id_article_sous_category"){
+								if($(this).val() != "-1"){
+									columns[$(this).attr("id")] = $(this).val();
+								}
+							}else{
+								columns[$(this).attr("id")] = $(this).val();
+							}
 						}
 					}
 					
@@ -554,9 +560,7 @@ $(document).ready(function(){
 			't_n'		:	selector,
 			'columns'	:	columns
 		};
-
-		console.log(columns);
-/*
+		console.log(data);
 		var return_page = ($(this).hasClass("sub"))? selector.toLowerCase() + "_2": selector.toLowerCase();
 		if(success){
 			$.ajax({
@@ -604,7 +608,6 @@ $(document).ready(function(){
 		}else{
 			$(".content").append('<div style="position:fixed; z-index: 9999999; width: 100%; top: 0px;"><div style="margin: 10px auto; width: 250px" class="animated bounce"><div class="info info-error info-dismissible"> <div class="info-message"> Vérifier le formulaire ! </div> <a href="#" class="close" data-dismiss="info" aria-label="close">&times;</a></div> 	</div></div>');
 		}
-*/
 	});
 
 });

@@ -9,7 +9,7 @@
         <div><?= $sous_category["article_sous_category_fr"] ?></div>
         <div><?= $sous_category["article_sous_category_es"] ?></div>
     </div>
-    <div class="hide absolute top-0 right-0 m-1 rounded bg-gray-500 text-gray-100 text-xs px-1"><?= $sous_category["id"] ?></div>
+    <div class="absolute top-0 right-0 m-1 rounded bg-gray-500 text-gray-100 text-xs px-1"><?= $sous_category["id"] ?></div>
     <div class="absolute bottom-0 right-0 m-2">
         <button data-id="<?= $sous_category["id"] ?>" class="sous_category_edit rounded bg-gray-200 text-gray-600 text-xs py-1 pb-2 px-3">تغيير</button>
     </div>

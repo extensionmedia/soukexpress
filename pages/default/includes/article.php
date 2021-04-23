@@ -23,8 +23,12 @@ $ob = new $table_name();
 	<div class="col_3">
 
 		<div class="input-group" style="overflow: hidden; margin-top: 10px">
-			<input type="text" placeholder="Chercher" class="suf" name="" id="request">
-			<div class="input-suf"><button title="Chercher" id="a_u_s" class="_propriete" data="_request"><i class="fa fa-search"></i></button></div>
+			<input type="text" placeholder="Chercher" class="suf req_input" name="" id="request">
+			<div class="input-suf">
+				<button title="Chercher" id="a_u_s" class="req_submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</div>
 		</div>
 
 	</div>
@@ -164,6 +168,10 @@ $ob = new $table_name();
 			});
 
 
+		});
+
+		$('.req_submit').on('click', function(){
+			$(".refresh_articles").trigger('click');
 		});
 	});
 </script>

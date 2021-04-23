@@ -16,10 +16,9 @@ if(file_exists($_SESSION['CORE'].$table_name.".php")){
 		$data[$k] =  addslashes ($v);
 	}	
 	
-	if($data["article_parent"] !== "-1"){
-		$data["id_article_sous_category"] = $data["article_parent"];
+	if($data["id_article_sous_category"] !== "-1"){
+		$data["id_article_sous_category"] = $data["id_article_sous_category"];
 	}
-	unset($data["article_parent"]);
 	
 	$ob->save($data);	
 	$lastID = $ob->getLastID();

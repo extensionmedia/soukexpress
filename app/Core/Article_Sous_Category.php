@@ -215,16 +215,16 @@ class Article_Sous_Category extends Modal{
 			if($data[0]['id_parent'] != '-1'){
 				$data2 = $this->find('', ['conditions'=> ['id='=>$data[0]['id_parent']] ], '');
 				if($data2){
-					array_push($tree, $data[0]['id_parent']);
+					if($data[0]['id_parent']!='-1') array_push($tree, $data[0]['id_parent']);
 					$data3 = $this->find('', ['conditions'=> ['id='=>$data2[0]['id_parent']] ], '');
 					if($data3){
-						array_push($tree, $data2[0]['id_parent']);
+						if($data2[0]['id_parent']!='-1') array_push($tree, $data2[0]['id_parent']);
 						$data4 = $this->find('', ['conditions'=> ['id='=>$data2[0]['id_parent']] ], '');
 						if($data4){
-							array_push($tree, $data3[0]['id_parent']);
+							if($data3[0]['id_parent']!='-1') array_push($tree, $data3[0]['id_parent']);
 							$data5 = $this->find('', ['conditions'=> ['id='=>$data2[0]['id_parent']] ], '');
 							if($data5){
-								array_push($tree, $data3[0]['id_parent']);
+								if($data4[0]['id_parent']!='-1') array_push($tree, $data4[0]['id_parent']);
 							}
 						}
 					}
