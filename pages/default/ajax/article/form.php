@@ -395,10 +395,10 @@ if(isset($_POST["id"])){
 				</div>
 
 				<div class="col_8-inline" style="text-align: right; padding-top: 10px">
-					<button class="btn btn-orange upload_btn" style="position: relative; overflow: hidden">
+					<button class="btn btn-orange btn_upload_file_article" style="position: relative; overflow: hidden">
 					<i class="fas fa-upload"></i> Choisir
-					<input type="file" id="upload_file_article" data="<?= ($action === "edit")? (!is_null($data["UID"]))? $data["UID"] : substr($formToken,0,8) : substr($formToken,0,8) ?>" class="" name="image" capture style="position: absolute; z-index: 9999; top: 0; left: 0; background-color: aqua; padding: 10px 0; opacity: 0">
 					</button>	
+					<input class="hidden" type="file" id="upload_file_article" data-unique="0" data-uid="<?= ($action === "edit")? (!is_null($data["UID"])? $data["UID"] : substr($formToken,0,8)) : substr($formToken,0,8) ?>" data-folder="article">
 					<button class="btn btn-blue show_files article" value="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"> Actualiser </button>					
 				</div>
 
@@ -609,6 +609,46 @@ $(document).ready(function(){
 			$(".content").append('<div style="position:fixed; z-index: 9999999; width: 100%; top: 0px;"><div style="margin: 10px auto; width: 250px" class="animated bounce"><div class="info info-error info-dismissible"> <div class="info-message"> Vérifier le formulaire ! </div> <a href="#" class="close" data-dismiss="info" aria-label="close">&times;</a></div> 	</div></div>');
 		}
 	});
+
+	$(document).on('click', '.btn_upload_file_article', function(){
+		alert('click');
+		$('#upload_file_article').trigger('click');
+	});
+
+	$(document).on('change','#upload_file_article',function(){
+
+		var uid =  $(this).data("uid");
+		var folder =  $(this).data("folder");
+		var unique =  $(this).data("unique");
+
+		var params = {
+			IdIputFile			:	"upload_file_article",
+			PHPUploader			:	"pages/default/ajax/upload_files.php",
+			PHPUploaderParams	:	"?path="+folder+"/"+uid,
+			Reloader			:	'show_files',
+			Unique				:	unique
+
+		};
+		if($(this).val() !== ""){ 
+			console.log(uploader(params)); 
+			$('#upload_file_article').val('');
+		}
+		/*
+		var id_client =  $(this).attr("data");
+
+		var params = {
+			IdIputFile			:	"upload_file_article",
+			PHPUploader			:	"pages/default/ajax/upload_files.php",
+			PHPUploaderParams	:	"?id=article/"+id_client
+			
+		};
+
+
+		if($(this).val() !== ""){
+			uploader(params);
+		}
+		*/	
+		});
 
 });
 </script>

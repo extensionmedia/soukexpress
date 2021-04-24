@@ -41,22 +41,6 @@ $(document).ready(function() {
 		
 	});
 	
-	$(document).on('change','#upload_file_article',function(){
-		var id_client =  $(this).attr("data");
-		
-		var params = {
-			IdIputFile			:	"upload_file_article",
-			PHPUploader			:	"pages/default/ajax/upload_files.php",
-			PHPUploaderParams	:	"?id=article/"+id_client
-			
-		};
-		
-		
-		if($(this).val() !== ""){
-			uploader(params);
-		}
-		
-	});
 	
 	$(document).on('change','#upload_file_marque',function(){
 		var id_client =  $(this).attr("data");
