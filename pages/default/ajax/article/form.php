@@ -611,7 +611,6 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '.btn_upload_file_article', function(){
-		alert('click');
 		$('#upload_file_article').trigger('click');
 	});
 
