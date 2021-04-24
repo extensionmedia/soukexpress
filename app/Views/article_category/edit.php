@@ -45,6 +45,13 @@
 					<span class="text-xs font-bold">Publier sur le Web</span>
 				</label>
 			</div>
+			<div class="form md:flex items-center mb-4 gap-2">
+				<div class="w-36 text-right text-gray-700 text-xs"></div>
+				<label class="flex items-center gap-2"> 
+					<input id="is_show_direct" type="checkbox" class="input" <?php if($category['is_show_direct']): ?> checked <?php endif ?></input>
+					<span class="text-xs font-bold">Filtrer par Sous Categorie</span>
+				</label>
+			</div>
 		</div>	
 
 		<?php if(isset($categories)): ?>
