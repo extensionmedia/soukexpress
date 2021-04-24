@@ -31,50 +31,30 @@ if(file_exists($core.$table_name.".php")){
 			if($k === "article_sous_category") $conditions["id_article_sous_category = "] = $v;
 		}
 
-		/*
-		if(isset($_POST['data']['filter']["category"])){
-			$id_category = $_POST['data']['filter']["category"];
-			if($id_category !== "25"){
-				foreach($_POST['data']['filter'] as $k=>$v){
-					if($k === "category") $conditions["id_article_category = "] = $v;
-					if($k === "sous_category") $conditions["id_article_sous_category = "] = $v;
-					if($k === "status") $conditions["id_article_status = "] = $v;
-					if($k === "type") $conditions["id_article_type = "] = $v;
-					if($k === "marque") $conditions["id_article_marque = "] = $v;
-				}				
-			}else{
-				foreach($_POST['data']['filter'] as $k=>$v){
-					if($k === "category") $conditions["id_article_category = "] = $v;
-					if($k === "sous_category") $conditions["id_parent = "] = $v;
-					if($k === "parent") $conditions["id_article_sous_category = "] = $v;
-					if($k === "status") $conditions["id_article_status = "] = $v;
-					if($k === "type") $conditions["id_article_type = "] = $v;
-					if($k === "marque") $conditions["id_article_marque = "] = $v;
-				}				
-			}
-		}else{
-			foreach($_POST['data']['filter'] as $k=>$v){
-				if($k === "status") $conditions["id_article_status = "] = $v;
-				if($k === "type") $conditions["id_article_type = "] = $v;
-				if($k === "marque") $conditions["id_article_marque = "] = $v;
-			}				
-		}
-		*/
-
 	}
+	$conditions_temp = $conditions;
 	if(count($conditions)>1){
 		$conditions = array("conditions AND"=>$conditions);	
 	}else{
 		$conditions = array("conditions"=>$conditions);		
 	}
 	unset($_SESSION["REQUEST"]);	
-	$_SESSION["REQUEST"] = array(
-		$table_name	=> array(
-								"args"	=>	$args,
-								"cond"	=>	$conditions
-							)
-	);	
+	require_once($core."Article_Sous_Category.php");
 
+	$tree = [];
+	if(isset($conditions_temp["id_article_sous_category = "])) $tree = $article_sous_category->showTree($conditions_temp["id_article_sous_category = "]);
+	if(isset($conditions_temp["id_article_category = "])) array_unshift($tree, $conditions_temp["id_article_category = "]);
+
+	
+
+	$_SESSION["REQUEST"] = [
+		$table_name	=> [
+			"args"	=>	$args,
+			"cond"	=>	$conditions,
+			"tree"	=>	$tree	
+		]
+	];	
+	if(isset($_POST['data']['request'])) $_SESSION["REQUEST"][$table_name]['request'] = $_POST['data']['request'];
 
 	echo $ob->drawTable($args,$conditions, "v_article");
 

@@ -20,10 +20,16 @@ $ob = new $table_name();
 </div>
 <hr>
 <div class="row searchBar" style="background-color: rgba(241,241,241,1.00); padding: 10px 0; margin: 10px 0px">
+<?php
+	$request = isset($_SESSION["REQUEST"][$table_name])? $_SESSION["REQUEST"][$table_name]: [];
+
+?>
+
+
 	<div class="col_3">
 
 		<div class="input-group" style="overflow: hidden; margin-top: 10px">
-			<input type="text" placeholder="Chercher" class="suf req_input" name="" id="request">
+			<input value="<?= isset($_SESSION["REQUEST"][$table_name]["request"])? $_SESSION["REQUEST"][$table_name]["request"]: "" ?>" type="text" placeholder="Chercher" class="suf req_input" name="" id="request">
 			<div class="input-suf">
 				<button title="Chercher" id="a_u_s" class="req_submit">
 					<i class="fa fa-search"></i>
@@ -37,12 +43,89 @@ $ob = new $table_name();
 			<div class="flex items-center gap-1 filters">
 				<select id="this_article_category" data="category" class="max-w-xs py-1">
 					<option selected value="-1"> --  Catégorie  -- </option>
-						<?php require_once($core."Article_Category.php"); 
-							foreach( $article_category->find("", array("order"=>"article_category_ar"), "") as $k=>$v){
-						?>	
-					<option value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
+					<?php require_once($core."Article_Category.php"); 
+						foreach( $article_category->find("", array("order"=>"article_category_ar"), "") as $k=>$v){
+					?>	
+							<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][0]) ){ ?>
+								<?php if($_SESSION["REQUEST"][$table_name]["tree"][0] == $v["id"]){  ?>
+									<option selected value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
+								<?php }else{ ?>
+									<option value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
+									<?php } ?>
+							<?php }else{ ?>
+								<option value="<?= $v["id"] ?>"> <?= $v["article_category_ar"] ?> </option>
+							<?php } ?>
 						<?php } ?>
 				</select>
+				<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][1]) ): ?>
+				<select data="article_sous_category" class="this_article_sous_category max-w-xs py-1">
+					<option value="-1">Sous Categorie</option>
+					<?php 
+						foreach( $article_category->find("", [
+							"conditions AND"	=>	[
+								"id_article_category="	=>	$_SESSION["REQUEST"][$table_name]["tree"][0],
+								"id_parent="			=>	"-1",
+							], 
+							"order"			=>	"article_sous_category_ar"], "article_sous_category") as $k=>$v){
+					?>	
+							<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][1]) ){ ?>
+								<?php if($_SESSION["REQUEST"][$table_name]["tree"][1] == $v["id"]){  ?>
+									<option selected value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+								<?php }else{ ?>
+									<option value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+									<?php } ?>
+							<?php }else{ ?>
+								<option value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+							<?php } ?>
+						<?php } ?>
+				</select>
+				<?php endif ?>
+				<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][2]) ): ?>
+				<select data="article_sous_category" class="this_article_sous_category max-w-xs py-1">
+					<option value="-1">Sous Categorie</option>
+					<?php 
+						foreach( $article_category->find("", [
+							"conditions AND"	=>	[
+								"id_article_category="	=>	$_SESSION["REQUEST"][$table_name]["tree"][0],
+								"id_parent="			=>	$_SESSION["REQUEST"][$table_name]["tree"][1],
+							], 
+							"order"			=>	"article_sous_category_ar"], "article_sous_category") as $k=>$v){
+					?>	
+							<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][2]) ){ ?>
+								<?php if($_SESSION["REQUEST"][$table_name]["tree"][2] == $v["id"]){  ?>
+									<option selected value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+								<?php }else{ ?>
+									<option value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+									<?php } ?>
+							<?php }else{ ?>
+								<option value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+							<?php } ?>
+						<?php } ?>
+				</select>
+				<?php endif ?>
+				<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][3]) ): ?>
+				<select data="article_sous_category" class="this_article_sous_category max-w-xs py-1">
+					<option value="-1">Sous Categorie</option>
+					<?php 
+						foreach( $article_category->find("", [
+							"conditions AND"	=>	[
+								"id_article_category="	=>	$_SESSION["REQUEST"][$table_name]["tree"][0],
+								"id_parent="			=>	$_SESSION["REQUEST"][$table_name]["tree"][2],
+							], 
+							"order"			=>	"article_sous_category_ar"], "article_sous_category") as $k=>$v){
+					?>	
+							<?php if(isset( $_SESSION["REQUEST"][$table_name]["tree"][3]) ){ ?>
+								<?php if($_SESSION["REQUEST"][$table_name]["tree"][3] == $v["id"]){  ?>
+									<option selected value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+								<?php }else{ ?>
+									<option value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+									<?php } ?>
+							<?php }else{ ?>
+								<option value="<?= $v["id"] ?>"> <?= $v["article_sous_category_ar"] ?> </option>
+							<?php } ?>
+						<?php } ?>
+				</select>
+				<?php endif ?>
 			</div>
 		</div>
 
@@ -59,7 +142,6 @@ $ob = new $table_name();
 		"style"	=>	(isset($_POST['data']['style']))? $_POST['data']['style'] : "list",
 	);
 		$args = ( isset($_SESSION["REQUEST"][$table_name]["args"]) )? $_SESSION["REQUEST"][$table_name]["args"]: $args;
-	 //var_dump($args);
 	 	$conditions = ( isset($_SESSION["REQUEST"][$table_name]["cond"]) )? $_SESSION["REQUEST"][$table_name]["cond"]: null;
 
 	?>
@@ -149,12 +231,10 @@ $ob = new $table_name();
 			
 			var filter = {};
 			$(".filters select").each(function(){
-					if($(this).val() !== "-1"){
-						filter[$(this).attr("data")] = $(this).val();
-					}
-
+				if($(this).val() !== "-1"){
+					filter[$(this).attr("data")] = $(this).val();
 				}
-			);
+			});
 			
 			if(Object.keys(filter).length > 0 ){
 				data.filter = filter;
