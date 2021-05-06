@@ -74,15 +74,15 @@ if(isset($_POST["id"])){
 
 					<!-- Designation -->
 					<div class="row" style="margin-bottom: 20px">
-						<div class="col_12">
+						<div class="col_12 px-2 mb-2">
 							<label for="libelle_fr">Désignation (fr)</label>
 							<input class="form-element required" type="text" placeholder="Désignation (fr)" id="libelle_fr" value="<?= ($action === "edit")? $data["libelle_fr"]: "" ?>">
 						</div>
-						<div class="col_12">
+						<div class="col_12 px-2 mb-2">
 							<label for="barcode">Désignation (es)</label>
 							<input class="form-element required" type="text" placeholder="Désignation (es)" id="libelle_es" value="<?= ($action === "edit")? $data["libelle_es"]: ""  ?>">
 						</div>
-						<div class="col_12">
+						<div class="col_12 px-2 mb-2">
 							<label for="code_fournisseur">Désignation (ar)</label>
 							<input class="form-element required" type="text" placeholder="Désignation (ar)" id="libelle_ar" value="<?= ($action === "edit")? $data["libelle_ar"]: "" ?>">
 						</div>
@@ -92,8 +92,8 @@ if(isset($_POST["id"])){
 					<div class="row" style="margin-bottom: 20px">
 						<div class="col_3">
 							<label for="id_article_type">Type</label>
-							<select id="id_article_type" class="form-element required">
-								<option selected value="-1"></option>
+							<select id="id_article_type" class="form-element required py-2 px-2 rounded mb-4">
+								<option selected value="-1">-- Type</option>
 								<?php 
 									require_once($core."Article_Type.php");
 									foreach($article_type->find(null, array("order"=>"article_type_fr"), null) as $k=>$v){
@@ -105,8 +105,8 @@ if(isset($_POST["id"])){
 						
 						<div class="col_3">
 							<label for="id_article_udm">Unité de Mesure</label>
-							<select id="id_article_udm" class="form-element required">
-								<option selected value="-1"></option>
+							<select id="id_article_udm" class="form-element required py-2 px-2 rounded mb-4">
+								<option selected value="-1">-- Unite de mosure</option>
 								<?php 
 									require_once($core."Article_UDM.php");
 									foreach($article_udm->find(null, array("order"=>"article_udm_fr"), null) as $k=>$v){
@@ -118,8 +118,8 @@ if(isset($_POST["id"])){
 						
 						<div class="col_1">
 							<label for="id_tva">TVA</label>
-							<select id="id_tva" class="form-element required">
-								<option selected value="-1"></option>
+							<select id="id_tva" class="form-element required py-2 px-2 rounded mb-4">
+								<option selected value="-1">-- TVA</option>
 								<?php 
 									require_once($core."Article_TVA.php");
 									foreach($article_tva->find(null, array("order"=>"article_tva"), null) as $k=>$v){
@@ -131,8 +131,8 @@ if(isset($_POST["id"])){
 						
 						<div class="col_2">
 							<label for="id_article_status">Status</label>
-							<select id="id_article_status" class="form-element required">
-								<option selected value="-1"></option>
+							<select id="id_article_status" class="form-element required py-2 px-2 rounded mb-4">
+								<option selected value="-1">-- Status</option>
 								<?php 
 									require_once($core."Article_Status.php");
 									foreach($article_status->find(null, array("order"=>"article_status_fr"), null) as $k=>$v){
@@ -144,8 +144,8 @@ if(isset($_POST["id"])){
 						
 						<div class="col_3">
 							<label for="id_article_marque">Marque</label>
-							<select id="id_article_marque" class="form-element">
-								<option selected value="-1"></option>
+							<select id="id_article_marque" class="form-element required py-2 px-2 rounded mb-4">
+								<option selected value="-1">-- MArque</option>
 								<?php 
 									require_once($core."Article_Marque.php");
 									foreach($article_marque->find(null, array("conditions"=>array("status="=>1), "order"=>"article_marque"), null) as $k=>$v){
