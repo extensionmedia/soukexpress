@@ -363,7 +363,7 @@ if(isset($_POST["id"])){
 			</div>
 
 			<div class="row">
-				<div class="col_12 article_disponibilite">
+				<div class="article_disponibilite">
 
 				</div>
 			</div>
@@ -672,7 +672,9 @@ $(document).ready(function(){
 
 
 	$(document).on('click', '.refresh_article_disponibilite', function(){
-
+		$('.article_disponibilite').html(`
+			<div class='w-24 px-auto text-center'><i style='font-size:30px;' class='fas fa-cog fa-spin'></i></div>
+		`);
 		var data = {
 			'method'		:	'disponibilite',
 			'controler'		:	'Article',

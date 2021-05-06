@@ -10,19 +10,20 @@
         <div class='flex'>
             <div class='col_6-inline'>
                 <label for='date_debut'>Date Début</label>	
-                <input style='text-align:center; font-size:14px; font-weight:bold' id='date_debut' type='date'>
+                <input style='text-align:center; font-size:14px; font-weight:bold' id='date_debut' type='date' value="<?= $disponibilite['date_debut'] ?>">
+                <input type="hidden" value="<?= $disponibilite['id'] ?>" id="id">
             </div>	
 
             <div class='col_6-inline'>
                 <label for='date_fin'>Date Fin</label>	
-                <input style='text-align:center; font-size:14px; font-weight:bold' id='date_fin' type='date'>
+                <input style='text-align:center; font-size:14px; font-weight:bold' id='date_fin' type='date' value="<?= $disponibilite['date_fin'] ?>">
             </div>				
         </div>
             
         <div class='row px-3' style='margin-top: 20px'>
             <div class='col_12'>
                 <div style='position: relative; width: 165px'>
-                    <div class='on_off on' id='is_show_badge'></div>
+                    <div class='on_off <?= $disponibilite['is_show_badge']? 'on': 'off' ?>' id='is_show_badge'></div>
                     <span style='position: absolute; right: 0; top: 10px; font-weight: bold; font-size: 12px'>
                         Afficher Badge
                     </span>
@@ -33,7 +34,7 @@
         <div class='row px-3' style='margin-top: 20px'>
             <div class='col_12'>
                 <div style='position: relative; width: 165px'>
-                    <div class='on_off on' id='is_auto_live'></div>
+                    <div class='on_off <?= $disponibilite['is_auto_live']? 'on': 'off' ?>' id='is_auto_live'></div>
                     <span style='position: absolute; right: 0; top: 10px; font-weight: bold; font-size: 12px'>
                         Publier auto
                     </span>
@@ -44,7 +45,7 @@
         <div class='row px-3' style='margin-top: 20px'>
             <div class='col_12'>
                 <div style='position: relative; width: 165px'>
-                    <div class='on_off on' id='status'></div>
+                    <div class='on_off <?= $disponibilite['status']? 'on': 'off' ?>' id='status'></div>
                     <span style='position: absolute; right: 0; top: 10px; font-weight: bold; font-size: 12px'>
                        Active
                     </span>
@@ -54,7 +55,7 @@
     
         <div class='row' style='margin-top:20px; padding:10px 0;background: #fafafa; border-top:#ccc 1px solid '>
             <div class='col_6-inline'>
-                <button class='btn btn-green save_article_disponibilite' value="<?= $UID ?>"><i class='fas fa-save'></i> Enregistrer</button>
+                <button class='btn btn-green save_article_disponibilite'><i class='fas fa-save'></i> Enregistrer</button>
             </div>
         </div>
             
@@ -82,16 +83,16 @@
             }
             if(_continue){
                 var params = {
+                    id              :   $("#id").val(),
                     date_debut      :   $("#date_debut").val(),
                     date_fin        :   $("#date_fin").val(),
                     is_show_badge   :   $("#is_show_badge").hasClass('on')? 1:0,
                     is_auto_live    :   $("#is_auto_live").hasClass('on')? 1:0,
                     status          :   $("#status").hasClass('on')? 1:0,
-                    UID             :   $(this).val()
                 }
 
                 var data = {
-                    'method'		:	'save_disponibilite',
+                    'method'		:	'update_disponibilite',
                     'controler'		:	'Article',
                     'params'		:	params
                 }

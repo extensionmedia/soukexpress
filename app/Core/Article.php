@@ -443,6 +443,21 @@ class Article extends Modal{
 		}
 	}
 
+	public function edit_disponibilite($params){
+		$view = new View("article.disponibilite.edit");
+		$disponibilite = $this->find('', ['conditions'=>['id='=>$params['id']]], 'article_disponibilite');
+		$html = $view->render(['disponibilite'=>$disponibilite[0]]);
+		return $html;
+	}
+
+	public function update_disponibilite($params){
+		if($params["id"]){
+			return $this->save($params, 'article_disponibilite');
+		}else{
+			return 0;
+		}
+	}
+
 }
 
 $article = new Article;

@@ -41,11 +41,12 @@
 		</div>
 	</div">
 </div>
+
 <script>
     $(document).ready(function(){
+
         $('.distroy_disponibilite').on('click', function(){
             var that = $(this);
-
             swal({
 			  title: "Vous êtes sûr?",
 			  text: "Êtes vous sûr de vouloir supprimer cette ligne? ",
@@ -55,34 +56,53 @@
 				cancelButtonColor:"#d33",
 				confirmButtonText:"Oui, Supprimer!"
 			}).then(function(t){
-			  if (t.value) {
-                var data = {
-                    'method'		:	'distroy_disponibilite',
-                    'controler'		:	'Article',
-                    'params'		:	{
-                        'id'	:	that.val()
+			  if(t.value) {
+                    var data = {
+                        'method'		:	'distroy_disponibilite',
+                        'controler'		:	'Article',
+                        'params'		:	{
+                            'id'	:	that.val()
+                        }
                     }
-                }
-                
-                $.ajax({
-                    type		: 	"POST",
-                    url			: 	"pages/default/ajax/Ajax.php",
-                    data		:	data,
-                    dataType	: 	"json",
-                }).done(function(response){
-                    $('.refresh_article_disponibilite').trigger('click');
-                }).fail(function(xhr){
-                    alert("Error");
-                    console.log(xhr.responseText);
-                });	
-			  }
+                    $.ajax({
+                        type		: 	"POST",
+                        url			: 	"pages/default/ajax/Ajax.php",
+                        data		:	data,
+                        dataType	: 	"json",
+                    }).done(function(response){
+                        $('.refresh_article_disponibilite').eq(1).trigger('click');
+                    }).fail(function(xhr){
+                        alert("Error");
+                        console.log(xhr.responseText);
+                    });
+                }	
+			});
 		});
 
+        $(document).on('click', '.edit_disponibilite', function(){            
+            $(".modal").addClass("show").html("<div class='modal-content' style='width:75px; opacity:0.9'><i style='font-size:30px;' class='fas fa-cog fa-spin'></i></div>");
 
+            var data = {
+                'method'		:	'edit_disponibilite',
+                'controler'		:	'Article',
+                'params'		:	{
+                    'id'	:	$(this).val()
+                }
+            }
+            var that = $(this);
+            $.ajax({
+                type		: 	"POST",
+                url			: 	"pages/default/ajax/Ajax.php",
+                data		:	data,
+                dataType	: 	"json",
+            }).done(function(response){
+                $(".modal").html("<div class='modal-content' style='width:420px; padding:0; border:0; border-radius:3px'>" + response.msg + "</div>");
+            }).fail(function(xhr){
+                alert("Error");
+                console.log(xhr.responseText);
+            });  
+        });
 
-
-
-
-        })
     });
+
 </script>
