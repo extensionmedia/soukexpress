@@ -74,15 +74,15 @@ if(isset($_POST["id"])){
 
 					<!-- Designation -->
 					<div class="row" style="margin-bottom: 20px">
-						<div class="col_4">
+						<div class="col_12">
 							<label for="libelle_fr">Désignation (fr)</label>
 							<input class="form-element required" type="text" placeholder="Désignation (fr)" id="libelle_fr" value="<?= ($action === "edit")? $data["libelle_fr"]: "" ?>">
 						</div>
-						<div class="col_4">
+						<div class="col_12">
 							<label for="barcode">Désignation (es)</label>
 							<input class="form-element required" type="text" placeholder="Désignation (es)" id="libelle_es" value="<?= ($action === "edit")? $data["libelle_es"]: ""  ?>">
 						</div>
-						<div class="col_4">
+						<div class="col_12">
 							<label for="code_fournisseur">Désignation (ar)</label>
 							<input class="form-element required" type="text" placeholder="Désignation (ar)" id="libelle_ar" value="<?= ($action === "edit")? $data["libelle_ar"]: "" ?>">
 						</div>
