@@ -44,6 +44,7 @@ if(isset($_POST["id"])){
 	<div class="panel-header" style="padding: 0px">
 		<div class="panel-header-tab ">
 			<a href="" class="active"><i class="fas fa-folder-open"></i> Détails</a>
+			<a href="" class="refresh_article_disponibilite" data-UID="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"  data-id="<?= ($action === "edit")? $data["id"] : 0 ?>"><i class="fas fa-store"></i> Disponibilité</a>
 			<a href="" class="refresh_tarif_achat" data="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"  data-id="<?= ($action === "edit")? $data["id"] : 0 ?>"><i class="fas fa-shopping-cart"></i> Tarif Achat</a>
 			<a href="" class="refresh_tarif_vente" data="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"  data-id="<?= ($action === "edit")? $data["id"] : 0 ?>"><i class="fas fa-shopping-basket"></i> Tarif Vente</a>
 			<a  href="" class="show_files article" data="<?= ($action === "edit")? ($data["UID"] !== ""? $data["UID"] : substr($formToken,0,8)) : substr($formToken,0,8) ?>"><i class="fas fa-images"></i> Images</a>
@@ -348,7 +349,27 @@ if(isset($_POST["id"])){
 				<input class='form-element' type='hidden' id='UID' value='<?= $action === "edit"? $data["UID"] : substr($formToken,0,8) ?>'>
 			</div>
 		</div>
-		
+
+		<div class="tab-content" style="display: none" >
+
+			<div class="row">
+				<div class="col_4-inline">
+					<h3 class="py-3 text-xl font-bold" style="margin-left: 6px">Disponibilité</h3>
+				</div>
+				<div class="col_8-inline" style="text-align: right; padding: 10px 5px">
+					<button class="btn btn-green add_article_disponibilite" data-id="<?= ($action === "edit")? $data["id"] : 0 ?>" value="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"><i class="fas fa-plus-square"></i> Ajouter</button>
+					<button class="btn btn-default refresh_article_disponibilite" data-UID="<?= ($action === "edit")? $data["UID"] : substr($formToken,0,8) ?>"><i class="fas fa-sync-alt"></i></button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col_12 article_disponibilite">
+
+				</div>
+			</div>
+			
+		</div>
+
 		<div class="tab-content" style="display: none" >
 
 			<div class="row">
@@ -647,7 +668,60 @@ $(document).ready(function(){
 			uploader(params);
 		}
 		*/	
+	});
+
+
+	$(document).on('click', '.refresh_article_disponibilite', function(){
+
+		var data = {
+			'method'		:	'disponibilite',
+			'controler'		:	'Article',
+			'params'		:	{
+				'UID'	:	$(this).data('uid')
+			}
+		}
+		var that = $(this);
+		$.ajax({
+			type		: 	"POST",
+			url			: 	"pages/default/ajax/Ajax.php",
+			data		:	data,
+			dataType	: 	"json",
+		}).done(function(response){
+			that.nextAll('select').remove();
+			if(response.msg !== ''){
+				$('.article_disponibilite').html(response.msg);
+			}
+		}).fail(function(xhr){
+			alert("Error");
+			console.log(xhr.responseText);
 		});
+	});
+
+	$(document).on('click', '.add_article_disponibilite', function(){
+		$(".modal").addClass("show").html("<div class='modal-content' style='width:75px; opacity:0.9'><i style='font-size:30px;' class='fas fa-cog fa-spin'></i></div>");
+
+		var data = {
+			'method'		:	'add_disponibilite',
+			'controler'		:	'Article',
+			'params'		:	{
+				'UID'	:	$(this).val()
+			}
+		}
+		var that = $(this);
+		$.ajax({
+			type		: 	"POST",
+			url			: 	"pages/default/ajax/Ajax.php",
+			data		:	data,
+			dataType	: 	"json",
+		}).done(function(response){
+			$(".modal").html("<div class='modal-content' style='width:420px; padding:0; border:0; border-radius:3px'>" + response.msg + "</div>");
+		}).fail(function(xhr){
+			alert("Error");
+			console.log(xhr.responseText);
+		});
+	});
+
+
 
 });
 </script>

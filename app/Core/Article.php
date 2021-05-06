@@ -1,5 +1,6 @@
 <?php
 require_once('Helpers/Modal.php');
+require_once('Helpers/View.php');
 
 class Article extends Modal{
 
@@ -406,6 +407,42 @@ class Article extends Modal{
 		$year = isset($params["year"])? $params["year"]: date("m");
 		return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
 	}
+
+	public function distroy_disponibilite($params){
+		if($params["id"]){
+			return $this->delete($params["id"], 'article_disponibilite');
+		}
+	}
+	public function disponibilite($params){
+		if($params["UID"]){
+			$data = $this->find('', ['conditions'=>['UID='=>$params["UID"]]], 'article_disponibilite');
+			$view = new View("article.disponibilite.list");
+			$html = $view->render(['data'=>$data]);
+			return $html;
+		}
+	}
+	public function add_disponibilite($params){
+		$view = new View("article.disponibilite.add");
+		$UID = $params['UID'];
+		$html = $view->render(['UID'=>$UID]);
+		return $html;
+	}
+
+	public function save_disponibilite($params){
+		if($params["UID"]){
+			$data = $this->find('id', ['conditions'=>['UID='=>$params["UID"]]], '');
+			$id_article = 0;
+			if(count($data)){
+				$id_article = $data[0]['id'];
+			}
+			$params['id_article'] = $id_article;
+			return $this->save($params, 'article_disponibilite');
+
+		}else{
+			return 0;
+		}
+	}
+
 }
 
 $article = new Article;
