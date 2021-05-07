@@ -144,7 +144,7 @@ if(isset($_POST["id"])){
 						
 						<div class="col_3">
 							<label for="id_article_marque">Marque</label>
-							<select id="id_article_marque" class="form-element required py-2 px-2 rounded mb-4">
+							<select id="id_article_marque" class="form-element py-2 px-2 rounded mb-4">
 								<option selected value="-1">-- MArque</option>
 								<?php 
 									require_once($core."Article_Marque.php");
