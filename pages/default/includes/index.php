@@ -42,7 +42,7 @@ $core = $_SESSION["CORE"];
 						<div class="col_6">
 							<div class="row">
 								<div class="col_6-inline item red">
-									<div class="title">
+									<div class="title check_article_disponibilite cursor-pointer">
 										<i class="fas fa-person-booth"></i> Commandes(s)
 									</div>
 									<div class="number">
@@ -132,7 +132,32 @@ $core = $_SESSION["CORE"];
 		</div>
 		
 	</div>
-	
+	<script>
+		$(document).ready(function(){
+
+			var timer = setInterval(() => {
+				var data = {
+					'method'		:	'check_article_disponibilite',
+					'controler'		:	'Article'
+				}
+				var that = $(this);
+				$.ajax({
+					type		: 	"POST",
+					url			: 	"pages/default/ajax/Ajax.php",
+					data		:	data,
+					dataType	: 	"json",
+				}).done(function(response){
+					console.log(response);
+					clearInterval(timer);
+				}).fail(function(xhr){
+					alert("Error");
+					console.log(xhr.responseText);
+				});				
+			}, 1000);
+
+
+		});
+	</script>
 
 </div>
 

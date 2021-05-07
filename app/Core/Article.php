@@ -422,7 +422,7 @@ class Article extends Modal{
 			return $html;
 		}
 	}
-	
+
 	public function add_disponibilite($params){
 		$view = new View("article.disponibilite.add");
 		$UID = $params['UID'];
@@ -457,6 +457,33 @@ class Article extends Modal{
 			return $this->save($params, 'article_disponibilite');
 		}else{
 			return 0;
+		}
+	}
+
+	public function check_article_disponibilite(){
+		foreach($this->find('', ['conditions'=>['status='=>1], 'order'=>'date_debut'], 'article_disponibilite') as $d){
+			$now = time();
+			$articles = [];
+			$date_debut = strtotime($d['date_debut']);
+			$date_fin = strtotime($d['date_fin']);
+
+			if($now >= $date_debut && $now <= $date_fin){
+				$this->save([
+					'is_new'				=>	1,
+					'is_visible_on_web'		=>	1,
+					'id'		=>	$d["id_article"]
+				], 'article');
+				$articles[] = [$d["id_article"] => "published"];
+			}else{
+				$this->save([
+					'is_new'	=>	0,
+					'is_visible_on_web'		=>	0,
+					'id'		=>	$d["id_article"]
+				], 'article');
+				$articles[] = [$d["id_article"] => "unpublished"];
+			}
+			return $articles;
+
 		}
 	}
 
