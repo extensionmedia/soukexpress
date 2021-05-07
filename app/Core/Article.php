@@ -413,6 +413,7 @@ class Article extends Modal{
 			return $this->delete($params["id"], 'article_disponibilite');
 		}
 	}
+
 	public function disponibilite($params){
 		if($params["UID"]){
 			$data = $this->find('', ['conditions'=>['UID='=>$params["UID"]]], 'article_disponibilite');
@@ -421,6 +422,7 @@ class Article extends Modal{
 			return $html;
 		}
 	}
+	
 	public function add_disponibilite($params){
 		$view = new View("article.disponibilite.add");
 		$UID = $params['UID'];

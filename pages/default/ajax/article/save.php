@@ -15,9 +15,8 @@ if(file_exists($_SESSION['CORE'].$table_name.".php")){
 	foreach($_POST["columns"] as $k=>$v){
 		$data[$k] =  addslashes ($v);
 	}	
-	
-	if($data["id_article_sous_category"] !== "-1"){
-		$data["id_article_sous_category"] = $data["id_article_sous_category"];
+	if( !isset($data["id_article_sous_category"]) ){
+		$data["id_article_sous_category"] = "-1";
 	}
 	
 	$ob->save($data);	
