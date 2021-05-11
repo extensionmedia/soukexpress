@@ -147,6 +147,7 @@ $core = $_SESSION["CORE"];
 					data		:	data,
 					dataType	: 	"json",
 				}).done(function(response){
+
 					console.log(response);
 					clearInterval(timer);
 				}).fail(function(xhr){
@@ -154,6 +155,10 @@ $core = $_SESSION["CORE"];
 					console.log(xhr.responseText);
 				});				
 			}, 1000);
+
+			var timer2 = setInterval(() => {
+				
+			}, 2000);
 
 
 		});

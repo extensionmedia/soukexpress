@@ -473,14 +473,26 @@ class Article extends Modal{
 					'is_visible_on_web'		=>	1,
 					'id'		=>	$d["id_article"]
 				], 'article');
-				$articles[] = [$d["id_article"] => "published"];
+				$articles[] = [
+					$d["id_article"] => [
+						"status"		=>	'published',
+						"date_debut"	=>	$date_debut . ' - ' . $now,
+						"date_fin"		=>	$date_fin . ' - ' . $now,
+					]
+				];
 			}else{
 				$this->save([
 					'is_new'	=>	0,
 					'is_visible_on_web'		=>	0,
 					'id'		=>	$d["id_article"]
 				], 'article');
-				$articles[] = [$d["id_article"] => "unpublished"];
+				$articles[] = [
+					$d["id_article"] => [
+						"status"		=>	'unpublished',
+						"date_debut"	=>	$date_debut . ' - ' . $now,
+						"date_fin"		=>	$date_fin . ' - ' . $now,
+					]
+				];
 			}
 			return $articles;
 
