@@ -476,8 +476,8 @@ class Article extends Modal{
 				$articles[] = [
 					$d["id_article"] => [
 						"status"		=>	'published',
-						"date_debut"	=>	$date_debut . ' - ' . $now,
-						"date_fin"		=>	$date_fin . ' - ' . $now,
+						"date_debut"	=>	$date_debut . ' - ' . $now . ' - ' . round( ($now-$date_debut) / (60 * 60 * 24) ),
+						"date_fin"		=>	$date_fin . ' - ' . $now . ' - ' . round( ($now-$date_fin) / (60 * 60 * 24) ),
 					]
 				];
 			}else{
@@ -489,8 +489,8 @@ class Article extends Modal{
 				$articles[] = [
 					$d["id_article"] => [
 						"status"		=>	'unpublished',
-						"date_debut"	=>	$date_debut . ' - ' . $now,
-						"date_fin"		=>	$date_fin . ' - ' . $now,
+						"date_debut"	=>	$date_debut . ' - ' . $now . ' - ' . round( ($now-$date_debut) / (60 * 60 * 24) ),
+						"date_fin"		=>	$date_fin . ' - ' . $now . ' - ' . round( ($now-$date_fin) / (60 * 60 * 24) ),
 					]
 				];
 			}
