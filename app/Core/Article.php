@@ -473,7 +473,7 @@ class Article extends Modal{
 					'is_visible_on_web'		=>	1,
 					'id'		=>	$d["id_article"]
 				], 'article');
-				$articles[] = [
+				$articles_ = [
 					$d["id_article"] => [
 						"status"		=>	'published',
 						"date_debut"	=>	$date_debut . ' - ' . $now . ' - ' . floor( ($now-$date_debut) / (60 * 60 * 24) ),
@@ -486,7 +486,7 @@ class Article extends Modal{
 					'is_visible_on_web'		=>	0,
 					'id'		=>	$d["id_article"]
 				], 'article');
-				$articles[] = [
+				$articles_ = [
 					$d["id_article"] => [
 						"status"		=>	'unpublished',
 						"date_debut"	=>	$date_debut . ' - ' . $now . ' - ' . floor( ($now-$date_debut) / (60 * 60 * 24) ),
@@ -494,6 +494,7 @@ class Article extends Modal{
 					]
 				];
 			}
+			array_push($articles, $articles_);
 			
 		}
 		return $articles;
