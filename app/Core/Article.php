@@ -494,9 +494,9 @@ class Article extends Modal{
 					]
 				];
 			}
-			return $articles;
-
+			
 		}
+		return $articles;
 	}
 
 }
