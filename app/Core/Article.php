@@ -493,6 +493,10 @@ class Article extends Modal{
 						"date_fin"		=>	$date_fin . ' - ' . $now . ' - ' . floor( ($now-$date_fin) / (60 * 60 * 24) ),
 					]
 				];
+				$this->save([
+					'status'	=>	0,
+					'id'		=>	$d['id']
+				], 'article_disponibilite');
 			}
 			array_push($articles, $articles_);
 			
