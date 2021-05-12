@@ -461,9 +461,9 @@ class Article extends Modal{
 	}
 
 	public function check_article_disponibilite(){
+		$articles = [];
 		foreach($this->find('', ['conditions'=>['status='=>1], 'order'=>'date_debut'], 'article_disponibilite') as $d){
 			$now = time();
-			$articles = [];
 			$date_debut = strtotime($d['date_debut']);
 			$date_fin = strtotime($d['date_fin']);
 
