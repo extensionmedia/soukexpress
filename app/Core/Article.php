@@ -501,7 +501,7 @@ class Article extends Modal{
 			array_push($articles, $articles_);
 			
 		}
-		return $articles;
+		return count($articles);
 	}
 
 }

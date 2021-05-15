@@ -147,8 +147,19 @@ $core = $_SESSION["CORE"];
 					data		:	data,
 					dataType	: 	"json",
 				}).done(function(response){
-
 					console.log(response);
+					var timer2 = setTimeout(() => {
+						$('.show_toast').addClass('relative').append(`
+							<div class="toast animated fadeIn absolute bottom-0 left-0 z-100 bg-green-300 py-1 px-3 rounded border-green-600 text-xs">
+								` + response.msg + ` Modifié status
+							</div>
+						`);
+					}, 2000);
+
+					timer2 = setTimeout(() => {
+						$('.toast').addClass('fadeOut');
+					}, 4000);
+
 					clearInterval(timer);
 				}).fail(function(xhr){
 					alert("Error");
@@ -156,9 +167,7 @@ $core = $_SESSION["CORE"];
 				});				
 			}, 1000);
 
-			var timer2 = setInterval(() => {
-				
-			}, 2000);
+
 
 
 		});
