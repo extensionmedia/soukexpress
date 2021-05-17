@@ -1,6 +1,7 @@
 <?php
 require_once('Helpers/Modal.php');
 require_once('Helpers/View.php');
+require_once('Notify.php');
 
 class Article extends Modal{
 
@@ -502,6 +503,14 @@ class Article extends Modal{
 			
 		}
 		return count($articles);
+	}
+
+	public function notify(){
+
+		$view = new View("email.main");
+		$html = $view->render([]);
+
+		return new Notify("subject test", $html);
 	}
 
 }

@@ -4,13 +4,13 @@ if(!isset($_SESSION['CORE'])){die(-1);}
 
 class Mail{
 	private $param = array(
-							"host"			=>	"mail.aspi-confort.com",
+							"host"			=>	"mail.soukexpress.ma",
 							"port"			=>	"465",
 							"smtp_secure"	=>	"ssl",
 							"is_smtp_auth"	=>	true,
-							"user_name"		=>	"contact@aspi-confort.com",
-							"password"		=>	"1A2Z3E4R5T6Y",
-							"from_name"		=>	"ASPICONFORT"
+							"user_name"		=>	"noreply@soukexpress.ma",
+							"password"		=>	"2VDigvMUVR9kqM2", //)vKps,mG;tnD
+							"from_name"		=>	"Soukexpress.ma"
 	
 							);
 	
@@ -44,7 +44,7 @@ class Mail{
 		$email->AddReplyTo($this->param["user_name"]);
 		$email->setFrom($this->param["user_name"],$this->param["from_name"]);
 
-		$email->AddCustomHeader("List-Unsubscribe: <mailto:unsubscribe@gestore.ma?subject=Unsubscribe>, <http://www.gestore.ma/unsubscribe.php?mailid=1234>");
+		$email->AddCustomHeader("List-Unsubscribe: <mailto:unsubscribe@soukexpress.ma?subject=Unsubscribe>, <https://www.soukexpress.ma/unsubscribe.php?mailid=1234>");
 
 		$email->Subject   = $values["subject"];
 

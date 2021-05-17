@@ -167,7 +167,25 @@ $core = $_SESSION["CORE"];
 				});				
 			}, 1000);
 
-
+			var timer2 = setTimeout(() => {
+				var data = {
+					'method'		:	'notify',
+					'controler'		:	'Article'
+				}
+				var that = $(this);
+				$.ajax({
+					type		: 	"POST",
+					url			: 	"pages/default/ajax/Ajax.php",
+					data		:	data,
+					dataType	: 	"json",
+				}).done(function(response){
+					console.log(response);
+				}).fail(function(xhr){
+					alert("Error");
+					$('.content').append(xhr.responseText);
+					console.log(xhr.responseText);
+				});				
+			}, 1000);
 
 
 		});
