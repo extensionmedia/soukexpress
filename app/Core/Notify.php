@@ -7,13 +7,13 @@ class Notify{
 	public function __construct($subject = null , $msg = null){
 		
 		$mail = new Mail;
-		$values = array(
+		$values = [
 					"to"		=>	"elmeftouhi@gmail.com",
 					"message" 	=>	($msg == null)? "null": $msg,
 					"subject" 	=>	($subject == null)? "null": $subject
-					);
+		];
 		
-		$mail->send($values);
+		return $mail->send($values);
 	}
 	
 }

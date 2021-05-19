@@ -250,6 +250,10 @@ $ob = new $table_name();
 
 		});
 
+		$(document).on('click', ".style .btn", function(){
+			$(".refresh_articles").trigger('click');				
+		});	
+		
 		$('.req_submit').on('click', function(){
 			$(".refresh_articles").trigger('click');
 		});

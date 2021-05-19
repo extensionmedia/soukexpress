@@ -8,8 +8,8 @@ class Mail{
 							"port"			=>	"465",
 							"smtp_secure"	=>	"ssl",
 							"is_smtp_auth"	=>	true,
-							"user_name"		=>	"noreply@soukexpress.ma",
-							"password"		=>	"2VDigvMUVR9kqM2", //)vKps,mG;tnD
+							"user_name"		=>	"contact@soukexpress.ma",
+							"password"		=>	"rasoloallah571422", //)vKps,mG;tnD
 							"from_name"		=>	"Soukexpress.ma"
 	
 							);
@@ -48,7 +48,7 @@ class Mail{
 
 		$email->Subject   = $values["subject"];
 
-		$email->MsgHTML( $values["message"] );
+		$email->MsgHTML("text here"); // ( $values["message"] );
 		$email->IsHTML(true); 
 		$email->CharSet="utf-8";
 

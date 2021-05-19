@@ -96,23 +96,35 @@ a[x-apple-data-detectors='true'] {
 
 <body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #f0f0f0;color: #000000">
 
-<table style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px;font-family:'Montserrat',sans-serif;" align="left">
-        <table height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #CCC;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
-            <tbody>
-                <tr style="vertical-align: top">
-                    <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
-                    <span>&#160;</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <h1>Nouvelle disponibilité</h1>
+  <p>La liste des articles suivants sont disponibles à la vente sur soukexpress.ma </p>
+
+  <table style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+    <tbody>
+      <tr>
+        <td>
+          <img src="https://statics.soukexpress.ma/article/528e9a7f/thumbnail%20(2).jpg" alt="Pomme Rouge Délicieuse">
+        </td>
+        <td>
+          <a href="https://www.soukexpress.ma/store/category/2177baae">
+            <h2>
+              Pomme Rouge Délicieuse
+            </h2>
+          </a>
+        </td>
+        <td>
+          <h2>
+            45.5 Dh
+          </h2>
+        </td>
+        <td>
+          <h2>
+            12/05/2021
+          </h2>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 
 </body>

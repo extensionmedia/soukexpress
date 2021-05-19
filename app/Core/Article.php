@@ -507,7 +507,7 @@ class Article extends Modal{
 
 	public function notify(){
 
-		$view = new View("email.main");
+		$view = new View("email.article_disponibilite");
 		$html = $view->render([]);
 
 		return new Notify("subject test", $html);
