@@ -166,7 +166,7 @@ $core = $_SESSION["CORE"];
 					console.log(xhr.responseText);
 				});				
 			}, 1000);
-/*
+
 			var timer2 = setTimeout(() => {
 				var data = {
 					'method'		:	'notify',
@@ -186,7 +186,7 @@ $core = $_SESSION["CORE"];
 					console.log(xhr.responseText);
 				});				
 			}, 1000);
-*/
+
 
 		});
 	</script>

@@ -296,7 +296,7 @@ class Article extends Modal{
 			//echo $images;
 		}else{
 			$images .= "<div style='display:inline-block; margin:5px; text-align:center'>";
-			$images .= "<img class='' style='width:100%; height:auto; display:block' src='http://".$statics."/creative_0.png'>";	
+			$images .= "<img class='' style='width:100%; height:auto; display:block' src='http://".$statics."public/images/images.png'>";	
 			$images .= "<button data-page='Article' class='btn btn-orange edit_ligne' value='".$args["id"]."'><i class='fas fa-edit'></i></button>";
 			$images .= "</div>";
 		}
@@ -306,6 +306,33 @@ class Article extends Modal{
 		
 	}
 	
+	public function get_image_src($UID){
+		
+		$statics = $_SESSION["STATICS"];
+		$upload_folder = $_SESSION["UPLOAD_FOLDER"];
+
+		$dS = DIRECTORY_SEPARATOR;
+
+		$filesDirectory = $upload_folder."article".$dS.$UID.$dS;
+		
+		$src = $statics."public/images/images.png";
+		
+		if(file_exists($filesDirectory)){
+
+			foreach(scandir($filesDirectory) as $k=>$v){
+
+				if($v <> "." and $v <> ".." and strpos($v, '.') !== false){
+					$src = $statics."article/".$UID."/".$v;
+				}
+
+			}	
+		}
+		
+		
+		return $src;
+		
+	}
+
 	public function createWatermark($arg = array()){
 		
 		if(isset($arg["article_folder"])){
@@ -474,43 +501,60 @@ class Article extends Modal{
 					'is_visible_on_web'		=>	1,
 					'id'		=>	$d["id_article"]
 				], 'article');
-				$articles_ = [
-					$d["id_article"] => [
-						"status"		=>	'published',
-						"date_debut"	=>	$date_debut . ' - ' . $now . ' - ' . floor( ($now-$date_debut) / (60 * 60 * 24) ),
-						"date_fin"		=>	$date_fin . ' - ' . $now . ' - ' . floor( ($now-$date_fin) / (60 * 60 * 24) ),
-					]
-				];
+
+				$articles_ = $this->find('', ['conditions'=>['id='=>$d["id_article"]]], 'v_article');
+
+
+				if(count($articles_)){
+					$img = $this->get_image_src( $articles_[0]['UID'] );
+					array_push($articles, [
+						'img'					=>	$img,
+						'article_category_ar'	=>	$articles_[0]['article_category_ar'],
+						'libelle_ar'	=>	$articles_[0]['libelle_ar'],
+						'prix_vente'	=>	$articles_[0]['prix_vente'],
+						'date'	=>	$d['date_debut'] . ' -> ' . $d['date_fin'],
+					]);
+				}
+
 			}else{
 				$this->save([
 					'is_new'	=>	0,
 					'is_visible_on_web'		=>	0,
 					'id'		=>	$d["id_article"]
 				], 'article');
-				$articles_ = [
-					$d["id_article"] => [
-						"status"		=>	'unpublished',
-						"date_debut"	=>	$date_debut . ' - ' . $now . ' - ' . floor( ($now-$date_debut) / (60 * 60 * 24) ),
-						"date_fin"		=>	$date_fin . ' - ' . $now . ' - ' . floor( ($now-$date_fin) / (60 * 60 * 24) ),
-					]
-				];
+
+				$articles_ = $this->find('', ['conditions'=>['id='=>$d["id_article"]]], 'v_article');
+
 				$this->save([
 					'status'	=>	0,
 					'id'		=>	$d['id']
 				], 'article_disponibilite');
+
+				if(count($articles_)){
+					$img = $this->get_image_src( $articles_[0]['UID'] );
+					array_push($articles, [
+						'img'					=>	$img,
+						'article_category_ar'	=>	$articles_[0]['article_category_ar'],
+						'libelle_ar'	=>	$articles_[0]['libelle_ar'],
+						'prix_vente'	=>	$articles_[0]['prix_vente'],
+						'date'			=>	$d['date_debut'] . ' -> ' . $d['date_fin'],
+					]);
+				}
+
 			}
-			array_push($articles, $articles_);
 			
 		}
-		return count($articles);
+		return $articles;
 	}
 
 	public function notify(){
-
-		$view = new View("email.article_disponibilite");
-		$html = $view->render([]);
-
-		return new Notify("subject test", $html);
+		$articles = $this->check_article_disponibilite();
+		if(count($articles)){
+			$view = new View("email.article_disponibilite");
+			$html = $view->render(['articles'=>$articles]);
+	
+			return new Notify("subject test", $html);
+		}
 	}
 
 }

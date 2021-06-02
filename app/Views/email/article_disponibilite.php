@@ -86,6 +86,9 @@ a[x-apple-data-detectors='true'] {
   text-decoration: none !important;
 }
 
+img{
+  width: 90px;
+}
 </style>
   
   
@@ -94,35 +97,37 @@ a[x-apple-data-detectors='true'] {
 
 </head>
 
-<body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #f0f0f0;color: #000000">
+<body class="clean-body" style="margin: 0;padding: 20px 40px;-webkit-text-size-adjust: 100%;background-color: #f0f0f0;color: #000000">
 
   <h1>Nouvelle disponibilité</h1>
   <p>La liste des articles suivants sont disponibles à la vente sur soukexpress.ma </p>
 
   <table style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
     <tbody>
+    <?php foreach($articles as $article): ?>
       <tr>
         <td>
-          <img src="https://statics.soukexpress.ma/article/528e9a7f/thumbnail%20(2).jpg" alt="Pomme Rouge Délicieuse">
+          <img src="<?= $article['img'] ?>" alt="<?= $article['img'] ?>">
         </td>
         <td>
-          <a href="https://www.soukexpress.ma/store/category/2177baae">
+          <a href="https://www.soukexpress.ma/">
             <h2>
-              Pomme Rouge Délicieuse
+            <?= $article['article_category_ar'] . ' - ' . $article['libelle_ar'] ?>
             </h2>
           </a>
         </td>
         <td>
           <h2>
-            45.5 Dh
+          <?= $article['prix_vente'] ?> Dh
           </h2>
         </td>
         <td>
           <h2>
-            12/05/2021
+          <?= $article['date'] ?>
           </h2>
         </td>
       </tr>
+    <?php endforeach ?>
     </tbody>
   </table>
 

@@ -48,7 +48,7 @@ class Mail{
 
 		$email->Subject   = $values["subject"];
 
-		$email->MsgHTML("text here"); // ( $values["message"] );
+		$email->MsgHTML( $values["message"] );
 		$email->IsHTML(true); 
 		$email->CharSet="utf-8";
 
