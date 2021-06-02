@@ -8,7 +8,7 @@ class Notify{
 		
 		$mail = new Mail;
 		$values = [
-					"to"		=>	"elmeftouhi@gmail.com",
+					"to"		=>	"tagitzakaria@gmail.com",
 					"message" 	=>	($msg == null)? "null": $msg,
 					"subject" 	=>	($subject == null)? "null": $subject
 		];

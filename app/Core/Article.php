@@ -553,7 +553,7 @@ class Article extends Modal{
 			$view = new View("email.article_disponibilite");
 			$html = $view->render(['articles'=>$articles]);
 	
-			return new Notify("subject test", $html);
+			return new Notify("تم نشر او إلغاء النشر لمنتوجات جديدة", $html);
 		}
 	}
 
