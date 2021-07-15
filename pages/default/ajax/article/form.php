@@ -89,7 +89,7 @@ if(isset($_POST["id"])){
 					</div>
 					
 					<!-- Type -->
-					<div class="row" style="margin-bottom: 20px">
+					<div class="flex gap-2" style="margin-bottom: 20px">
 						<div class="col_3">
 							<label for="id_article_type">Type</label>
 							<select id="id_article_type" class="form-element required py-2 px-2 rounded mb-4">
@@ -145,12 +145,12 @@ if(isset($_POST["id"])){
 						<div class="col_3">
 							<label for="id_article_marque">Marque</label>
 							<select id="id_article_marque" class="form-element py-2 px-2 rounded mb-4">
-								<option selected value="-1">-- MArque</option>
+								<option selected value="-1">-- Marque</option>
 								<?php 
 									require_once($core."Article_Marque.php");
 									foreach($article_marque->find(null, array("conditions"=>array("status="=>1), "order"=>"article_marque"), null) as $k=>$v){
 								?>
-								<option <?= ($action === "edit")? ($v["id"] === $data["id_article_marque"]? "selected" : "") : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_marque"] ?> </option>
+								<option <?= $action === "edit"? ($v["id"] === $data["id_article_marque"]? "selected" : "") : "" ?>  value="<?= $v["id"] ?>"> <?= $v["article_marque"] ?> </option>
 								<?php } ?>
 							</select>
 						</div>
@@ -158,47 +158,18 @@ if(isset($_POST["id"])){
 					</div>
 					
 					<!-- Poid -->
-					<div class="row" style="margin-bottom: 20px">
-						<div class="col_6">
-							<div class="row">
-								<div class="col_4-inline">
-									<label for="poid">Poid (Kg)</label>
-									<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
-								</div>
-								<div class="col_4-inline">
-									<label for="poid_caisse">Poid en Caisse (Kg)</label>
-									<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
-								</div>
-								<div class="col_4-inline">
-									<label for="qte_caisse">Unité en Caisse</label>
-									<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
-								</div>
-							</div>
+					<div class="flex" style="margin-bottom: 20px">
+						<div class="col_4-inline">
+							<label for="poid">Poid (Kg)</label>
+							<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
 						</div>
-					</div>
-
-					<div class="row" style="margin-bottom: 20px">
-						<div class="col_6">
-							<div class="row">
-								<div class="col_4-inline">
-									<label for="poid">Poid (Kg)</label>
-									<input id="poid" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid"] : "0" ?>">
-								</div>
-								<div class="col_4-inline">
-									<label for="poid_caisse">Poid en Caisse (Kg)</label>
-									<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
-								</div>
-								<div class="col_4-inline">
-									<label for="qte_caisse">Unité en Caisse</label>
-									<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
-								</div>
-							</div>
+						<div class="col_4-inline">
+							<label for="poid_caisse">Poid en Caisse (Kg)</label>
+							<input id="poid_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["poid_caisse"] : "0" ?>">
 						</div>
-					</div>
-
-					<div class="row" style="margin-bottom: 20px">
-						<div class="col_12-inline">
-							<h3>Commande</h3>						
+						<div class="col_4-inline">
+							<label for="qte_caisse">Unité en Caisse</label>
+							<input id="qte_caisse" class="form-element" type="number" value="<?= ($action === "edit")? $data["qte_caisse"] : "0" ?>">
 						</div>
 					</div>
 
@@ -222,14 +193,14 @@ if(isset($_POST["id"])){
 							<div class="row" style="margin-bottom: 20px;">
 								<div class="col_12">
 									<label for="is_allow_stock_negative">
-										<input class="form-element" type="checkbox" id="is_allow_stock_negative" <?= ($action === "edit")? ($data["is_allow_stock_negative"])? "checked" : "" : "" ?>> Permettre Stock négative
+										<input class="form-element" type="checkbox" id="is_allow_stock_negative" <?= ($action === "edit")? ($data["is_allow_stock_negative"]? "checked" : "") : "" ?>> Permettre Stock négative
 									</label>					
 								</div>
 							</div>	
 							<div class="row" style="margin-bottom: 20px;">
 								<div class="col_12">
 									<label for="is_prix_bloquer">
-										<input class="form-element" type="checkbox" id="is_prix_bloquer" <?= ($action === "edit")? ($data["is_prix_bloquer"])? "checked" : "" : "" ?>> Prix bloqué
+										<input class="form-element" type="checkbox" id="is_prix_bloquer" <?= ($action === "edit")? ($data["is_prix_bloquer"]? "checked" : "") : "" ?>> Prix bloqué
 									</label>					
 								</div>
 							</div>
@@ -237,7 +208,7 @@ if(isset($_POST["id"])){
 							<div class="row" style="margin-bottom: 20px;">
 								<div class="col_12">
 									<label for="is_sur_commande">
-										<input class="form-element" type="checkbox" id="is_sur_commande" <?= ($action === "edit")? ($data["is_sur_commande"])? "checked" : "" : "" ?>> Sur Commande
+										<input class="form-element" type="checkbox" id="is_sur_commande" <?= ($action === "edit")? ($data["is_sur_commande"]? "checked" : "") : "" ?>> Sur Commande
 									</label>					
 								</div>
 							</div>
@@ -245,7 +216,7 @@ if(isset($_POST["id"])){
 							<div class="row" style="margin-bottom: 20px;">
 								<div class="col_12">
 									<label for="is_new">
-										<input class="form-element" type="checkbox" id="is_new" <?= ($action === "edit")? ($data["is_new"])? "checked" : "" : "" ?>> Marqué Nouveau
+										<input class="form-element" type="checkbox" id="is_new" <?= ($action === "edit")? ($data["is_new"]? "checked" : "") : "" ?>> Marqué Nouveau
 									</label>					
 								</div>
 							</div>

@@ -254,7 +254,7 @@ class Article extends Modal{
 			}
 			
 			foreach($values as $k=>$v){
-				$returned .= "<div style='position:relative; width:180px; height:180px; margin:5px; display:inline-block; background-color:rgba(220,220,220,0.5); border:1px solid #C0C0C0; border-radius:7px'>" . $this->get_files("article", (is_null($v["UID"]))? "a": ($v["UID"] === "")? "a": $v["UID"],array("id"=>$v["id"])) . "<span class='label label-red' style='position:absolute; top:10px; left:10px'>".$v["code"] . "</span></div>";
+				$returned .= "<div style='position:relative; width:180px; height:180px; margin:5px; display:inline-block; background-color:rgba(220,220,220,0.5); border:1px solid #C0C0C0; border-radius:7px'>" . $this->get_files("article", (is_null($v["UID"]))? "a": ($v["UID"] === ""? "a": $v["UID"]),array("id"=>$v["id"])) . "<span class='label label-red' style='position:absolute; top:10px; left:10px'>".$v["code"] . "</span></div>";
 			}
 			
 		}

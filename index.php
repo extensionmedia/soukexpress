@@ -1,6 +1,6 @@
 <?php
 session_start();
-$host_dev = "extensionmedia/SOUKEXPRESS.MA/soukexpress_backend/";
+$host_dev = "localhost/extensionmedia/soukexpress_backend/";
 $host_prod = $_SERVER['SERVER_NAME'] . "/";
 $envirenment = "SOUKEXPRESS-MANAGER";
 $D_S = DIRECTORY_SEPARATOR;
