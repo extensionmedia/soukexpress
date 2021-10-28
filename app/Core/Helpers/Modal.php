@@ -110,7 +110,7 @@ class Modal{
 					$params = $fields;
 				}
 			}else{
-				$fields = $fields==null? "*": ($fields=="all"? "*": $fields );
+				$fields = $fields==null? "*": ($fields=="all"? "*": $fields);
 				$req = "SELECT ".$fields." FROM ".$tableToUse;
 			}
 			$reqTemp = "";
